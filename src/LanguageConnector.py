@@ -1,9 +1,6 @@
 import sys
-import vim
 
 from string import digits
-
-from VimWriter import VimWriter
 
 class Message:
     def __init__(self, message, num):
@@ -65,6 +62,7 @@ class Message:
 class LanguageConnector:
     def __init__(self, agent):
         self.agent = agent
+        self.rosie_message_callback = None
         self.connected = False
         self.output_handler_ids = { "send-message": -1 }
 
@@ -72,11 +70,10 @@ class LanguageConnector:
         self.next_message_id = 1
         self.language_id = None
 
-        if self.agent.config.messages_file != None:
-            with open(self.agent.config.messages_file, 'r') as f:
-                vim.command("let g:rosie_messages = [\"" + "\",\"".join([ line.rstrip('\n') for line in f.readlines()]) + "\"]")
-
         self.messages_to_remove = set()
+
+    def register_message_callback(self, rosie_message_callback):
+        self.rosie_message_callback = rosie_message_callback
 
     def connect(self):
         if self.connected:
@@ -106,7 +103,6 @@ class LanguageConnector:
             self.language_id = None
 
     def send_message(self, message):
-        self.agent.writer.write("Instr: " + message, VimWriter.MESSAGES_WIN)
         if self.current_message != None:
             self.messages_to_remove.add(self.current_message)
         self.current_message = Message(message, self.next_message_id)
@@ -135,19 +131,19 @@ class LanguageConnector:
             print sys.exc_info()
 
     def on_output_event(self, att_name, root_id):
-        self.agent.writer.write("Output Handler Callback: " + att_name)
         if att_name == "send-message":
             self.process_output_link_message(root_id)
 
     def process_output_link_message(self, root_id):
         if root_id.GetNumberChildren() == 0:
             root_id.CreateStringWME("status", "error")
-            self.agent.writer.write("LanguageConnector: Error - message has no children")
+            print("LanguageConnector: Error - message has no children")
             return
 
         for i in range(root_id.GetNumberChildren()):
             child_wme = root_id.GetChild(i)
             if child_wme.GetAttribute() == "type":
-                self.agent.writer.write("Rosie: " + child_wme.GetValueAsString(), VimWriter.MESSAGES_WIN)
+                if this.rosie_message_callback != None:
+                    this.rosie_message_callback("Rosie: " + child_wme.GetValueAsString())
                 break
         root_id.CreateStringWME("status", "complete")

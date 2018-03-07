@@ -5,7 +5,7 @@ import time
 
 import Python_sml_ClientInterface as sml
 
-#from LanguageConnector import LanguageConnector
+from LanguageConnector import LanguageConnector
 #from ActuationConnector import ActuationConnector
 from PerceptionConnector import PerceptionConnector
 
@@ -70,7 +70,7 @@ class SoarAgent:
         self.agent.ExecuteCommandLine("w " + str(config.watch_level))
 
         self.connectors = {}
-        #self.connectors["language"] = LanguageConnector(self)
+        self.connectors["language"] = LanguageConnector(self)
         #self.connectors["actuation"] = ActuationConnector(self)
         self.connectors["perception"] = PerceptionConnector(self, sim)
 

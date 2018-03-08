@@ -1,6 +1,8 @@
 from Tkinter import *
 import tkFont
 
+import sys
+
 from SoarAgent import SoarAgent, AgentConfig
 from Ai2ThorSimulator import Ai2ThorSimulator
 from ControllerGUI import ControllerGUI
@@ -36,9 +38,10 @@ class RosieGUI(Frame):
 
     def init_simulator(self):
         self.sim = Ai2ThorSimulator()
+        self.sim.load()
 
-    def init_soar_agent(self):
-        self.agent = SoarAgent(AgentConfig("rosie.config"), self.sim)
+    def init_soar_agent(self, config_file):
+        self.agent = SoarAgent(AgentConfig(config_file), self.sim)
         self.agent.connectors["language"].register_message_callback(self.receive_message)
 
     def create_script_buttons(self):
@@ -79,7 +82,12 @@ class RosieGUI(Frame):
         if self.history_index < len(self.message_history):
             self.chat_entry.insert(END, self.message_history[self.history_index])
 
-    def __init__(self, master=None):
+    def on_exit(self):
+        self.agent.kill()
+        root.destroy()
+
+
+    def __init__(self, rosie_config, master=None):
         Frame.__init__(self, master, width=800, height=600)
         master.columnconfigure(0, weight=1)
         master.rowconfigure(0, weight=1)
@@ -89,11 +97,15 @@ class RosieGUI(Frame):
 
         self.create_widgets()
         self.init_simulator()
-        self.init_soar_agent()
+        self.init_soar_agent(rosie_config)
         self.create_script_buttons()
 
         controller_gui = ControllerGUI(self.sim, master=self)
 
-root = Tk()
-rosie_gui = RosieGUI(master=root)
-rosie_gui.mainloop()
+if len(sys.argv) == 1:
+    print "Need to specify rosie config file as argument"
+else:
+    root = Tk()
+    rosie_gui = RosieGUI(sys.argv[1], master=root)
+    root.protocol("WM_DELETE_WINDOW", rosie_gui.on_exit)
+    root.mainloop()

@@ -10,6 +10,7 @@ class WorldObjectManager(object):
 
         self.added = False
         self.objects_id = None
+        self.next_obj_id = 1
 
     def get_object(self, handle):
         return self.objects[handle]
@@ -43,7 +44,11 @@ class WorldObjectManager(object):
         # Combine multiple observations that correspond to the same object into a list per id
         for obj_data in current_observation["objects"]:
             perc_id = str(obj_data["objectId"].replace("|", ""))
-            handle = self.object_links.get(perc_id, perc_id)
+            handle = self.object_links.get(perc_id, None)
+            if handle == None:
+                handle = perc_id.replace("-", "+").split("+")[0] + str(self.next_obj_id)
+                self.next_obj_id += 1
+                self.object_links[perc_id] = handle
             new_obj_data[handle] = obj_data
 
         stale_objs = set(self.objects.keys())

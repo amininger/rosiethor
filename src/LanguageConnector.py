@@ -143,7 +143,7 @@ class LanguageConnector:
         for i in range(root_id.GetNumberChildren()):
             child_wme = root_id.GetChild(i)
             if child_wme.GetAttribute() == "type":
-                if this.rosie_message_callback != None:
-                    this.rosie_message_callback("Rosie: " + child_wme.GetValueAsString())
+                if self.rosie_message_callback != None:
+                    self.rosie_message_callback("Rosie: " + child_wme.GetValueAsString())
                 break
         root_id.CreateStringWME("status", "complete")

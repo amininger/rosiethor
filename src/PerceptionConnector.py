@@ -15,19 +15,19 @@ class PerceptionConnector(AgentConnector):
 
     def on_input_phase(self, input_link):
         self.world.update_objects(self.sim.world)
-        svs_commands = ""
+        svs_commands = []
         if not self.world.is_added():
             self.world.add_to_wm(input_link, svs_commands)
         else:
             self.world.update_wm(svs_commands)
         if len(svs_commands) > 0:
-            self.agent.SendSVSCommands(svs_commands)
+            self.agent.agent.SendSVSInput("\n".join(svs_commands))
 
     def on_init_soar(self):
-        svs_commands = ""
+        svs_commands = []
         self.world.remove_from_wm(svs_commands)
         if len(svs_commands) > 0:
-            self.agent.SendSVSCommands(svs_commands)
+            self.agent.agent.SendSVSInput("\n".join(svs_commands))
 
     def on_output_event(self, att_name, root_id):
         if att_name == "modify-scene":

@@ -12,7 +12,7 @@ class WorldObject(object):
 
         self.bbox_pos = [0, 0, 0]
         self.bbox_rot = [0, 0, 0]
-        self.bbox_scl = [1, 1, 1]
+        self.bbox_scl = [0.1, 0.1, 0.1]
 
         self.pos_changed = True
         self.rot_changed = True
@@ -33,7 +33,7 @@ class WorldObject(object):
     def get_pos(self):
         return tuple(self.bbox_pos)
     def set_pos(self, pos):
-        self.bbox_pos = list(pos)
+        self.bbox_pos = [ pos[0], pos[1], -pos[2] ]
         self.pos_changed = True
 
     # Rot: The orientation of the world object, in x,y,z axis rotations
@@ -111,8 +111,8 @@ class WorldObject(object):
             self.open_wme.add_to_wm(vals_id)
             self.closed_wme.add_to_wm(vals_id)
 
-        svs_commands += SVSCommands.add_box(self.handle, self.bbox_pos, self.bbox_rot, self.bbox_scl)
-        svs_commands += SVSCommands.add_tag(self.handle, "object-source", "perception")
+        svs_commands.append(SVSCommands.add_box(self.handle, self.bbox_pos, self.bbox_rot, self.bbox_scl))
+        svs_commands.append(SVSCommands.add_tag(self.handle, "object-source", "perception"))
         
         self.added = True;
 
@@ -121,15 +121,15 @@ class WorldObject(object):
             return
 
         if self.pos_changed:
-            svs_commands += SVSCommands.change_pos(self.handle, self.bbox_pos)
+            svs_commands.append(SVSCommands.change_pos(self.handle, self.bbox_pos))
             self.pos_changed = False
 
         if self.rot_changed:
-            svs_commands += SVSCommands.change_rot(self.handle, self.bbox_rot)
+            svs_commands.append(SVSCommands.change_rot(self.handle, self.bbox_rot))
             self.rot_changed = False
 
         if self.scl_changed:
-            svs_commands += SVSCommands.change_scl(self.handle, self.bbox_scl)
+            svs_commands.append(SVSCommands.change_scl(self.handle, self.bbox_scl))
             self.scl_changed = False
 
         if self.last_data["openable"]:
@@ -146,7 +146,7 @@ class WorldObject(object):
         if not self.added:
             return
 
-        svs_commands += SVSCommands.delete(self.handle)
+        svs_commands.append(SVSCommands.delete(self.handle))
         self.obj_id.DestroyWME()
         self.obj_id = None
         self.open_wme = None

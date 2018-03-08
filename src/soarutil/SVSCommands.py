@@ -31,28 +31,28 @@ class SVSCommands:
     
     @staticmethod
     def change_pos(obj_id, pos):
-        return "change {:s} p {:s}\n".format(obj_id, SVSCommands.pos_to_str(pos))
+        return "change {:s} p {:s}".format(obj_id, SVSCommands.pos_to_str(pos))
     
     @staticmethod
     def change_rot(obj_id, rot):
-        return "change {:s} r {:s}\n".format(obj_id, SVSCommands.rot_to_str(rot))
+        return "change {:s} r {:s}".format(obj_id, SVSCommands.rot_to_str(rot))
     
     @staticmethod
     def change_scl(obj_id, scl):
-        return "change {:s} s {:s}\n".format(obj_id, SVSCommands.scl_to_str(scl))
+        return "change {:s} s {:s}".format(obj_id, SVSCommands.scl_to_str(scl))
     
     @staticmethod
     def delete(obj_id):
-    	return "delete {:s}\n".format(obj_id)
+    	return "delete {:s}".format(obj_id)
     
     @staticmethod
     def add_tag(obj_id, tag_name, tag_value):
-    	return "tag add {:s} {:s} {:s}\n".format(obj_id, tag_name, tag_value)
+    	return "tag add {:s} {:s} {:s}".format(obj_id, tag_name, tag_value)
     
     @staticmethod
     def change_tag(obj_id, tag_name, tag_value):
-    	return "tag change {:s} {:s} {:s}\n".format(obj_id, tag_name, tag_value)
+    	return "tag change {:s} {:s} {:s}".format(obj_id, tag_name, tag_value)
     
     @staticmethod
     def delete_tag(obj_id, tag_name):
-    	return "tag delete {:s} {:s}\n".format(obj_id, tag_name)
+    	return "tag delete {:s} {:s}".format(obj_id, tag_name)

@@ -3,10 +3,9 @@ import tkFont
 
 import sys
 
-from SoarAgent import SoarAgent, AgentConfig
+from RosieThorAgent import RosieThorAgent
 from Ai2ThorSimulator import Ai2ThorSimulator
 from ControllerGUI import ControllerGUI
-
 
 class RosieGUI(Frame):
     def create_widgets(self):
@@ -41,8 +40,9 @@ class RosieGUI(Frame):
         self.sim.load()
 
     def init_soar_agent(self, config_file):
-        self.agent = SoarAgent(AgentConfig(config_file), self.sim)
+        self.agent = RosieThorAgent(config_file, self.sim)
         self.agent.connectors["language"].register_message_callback(self.receive_message)
+        self.agent.connect()
 
     def create_script_buttons(self):
         self.script = []
@@ -85,7 +85,6 @@ class RosieGUI(Frame):
     def on_exit(self):
         self.agent.kill()
         root.destroy()
-
 
     def __init__(self, rosie_config, master=None):
         Frame.__init__(self, master, width=800, height=600)

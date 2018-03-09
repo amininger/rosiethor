@@ -1,15 +1,15 @@
 import sys
 
 from string import digits
-from soarutil import *
+from pysoarlib import *
 
 from WorldObjectManager import WorldObjectManager
 
 class PerceptionConnector(AgentConnector):
     # TODO: Implement eye position?
     def __init__(self, agent, sim):
-        super(PerceptionConnector, self).__init__(agent)
-        self.output_handler_ids["modify-scene"] = -1
+        AgentConnector.__init__(self, agent)
+        self.register_output_handler("modify-scene")
         self.sim = sim
         self.world = WorldObjectManager()
 
@@ -41,14 +41,14 @@ class PerceptionConnector(AgentConnector):
             dest_handle = root_id.GetChildString("destination-handle")
             if src_handle == None:
                 error = True
-                print "!!! PerceptionConnector::process_modify_scene_command[link]\n  No ^source-handle"
+                self.print_handler("!!! PerceptionConnector::process_modify_scene_command[link]\n  No ^source-handle")
             elif dest_handle == None:
                 error = True
-                print "!!! PerceptionConnector::process_modify_scene_command[link]\n  No ^destination-handle"
+                self.print_handler("!!! PerceptionConnector::process_modify_scene_command[link]\n  No ^destination-handle")
             else:
                 self.world.link_objects(src_handle, dest_handle)
         else:
             error = True
-            print "!!! PerceptionConnector::process_modify_scene_command\n  Bad ^type"
+            self.print_handler("!!! PerceptionConnector::process_modify_scene_command\n  Bad ^type")
 
         root_id.CreateStringWME("status", "error" if error else "complete")

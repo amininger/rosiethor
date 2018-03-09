@@ -1,0 +1,7 @@
+Pick up the red box.
+Put the red box on the table.
+Deliver the package to the main office.
+The goal is that the package is in the main office.
+Pick up the package.
+Go to the main office.
+Put down the package.

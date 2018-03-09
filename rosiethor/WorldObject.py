@@ -1,14 +1,13 @@
-from soarutil import *
+from pysoarlib import *
+
+from ObjectProperty import ObjectProperty
 
 
 class WorldObject(object):
     def __init__(self, handle, obj_data):
         self.handle = handle
 
-        self.obj_id = None
-        self.open_wme = None
-        self.closed_wme = None
-        self.added = False
+        self.properties = {}
 
         self.bbox_pos = [0, 0, 0]
         self.bbox_rot = [0, 0, 0]
@@ -17,6 +16,9 @@ class WorldObject(object):
         self.pos_changed = True
         self.rot_changed = True
         self.scl_changed = True
+
+        self.added = False
+        self.obj_id = None
 
         self.update(obj_data)
 
@@ -51,8 +53,17 @@ class WorldObject(object):
         self.scl_changed = True
 
     def update(self, obj_data):
+        if len(self.properties) == 0:
+            self.create_properties(obj_data)
         self.last_data = obj_data
         self.update_bbox(obj_data)
+
+        visibility = "visible" if obj_data["visible"] else "not-visible"
+        self.properties["visiblity"].set_value(visibility)
+
+        if self.last_data["openable"]:
+            open_value = "open2" if obj_data["isopen"] else "closed2"
+            self.properties["door2"].set_value(open_value)
 
     def update_bbox(self, obj_data):
         pos = obj_data["position"]
@@ -60,6 +71,24 @@ class WorldObject(object):
 
         rot = obj_data["rotation"]
         self.set_rot( (float(pos["x"]), float(pos["y"]), float(pos["z"])) )
+
+    # Properties
+    def create_properties(self, obj_data):
+        self.properties["category"] = ObjectProperty("category", "object")
+
+        obj_name = self.handle.replace("-", "+").split("+")[0].lower()
+        self.properties["name"] = ObjectProperty("name", obj_name)
+
+        self.properties["visiblity"] = ObjectProperty("visibility", "not-visible")
+
+        if obj_data["receptacle"]:
+            self.properties["receptacle"] = ObjectProperty("receptacle", "receptacle")
+
+        if obj_data["pickupable"]:
+            self.properties["grabbable"] = ObjectProperty("grabbable", "grabbable")
+
+        if obj_data["openable"]:
+            self.properties["door2"] = ObjectProperty("door2", "closed2")
 
     ### Methods for managing working memory structures ###
 
@@ -74,42 +103,8 @@ class WorldObject(object):
         self.obj_id.CreateStringWME("object-handle", self.handle)
         props_id = self.obj_id.CreateIdWME("properties")
 
-        prop_id = props_id.CreateIdWME("property")
-        prop_id.CreateStringWME("property-handle", "category")
-        prop_id.CreateStringWME("type", "visual")
-        prop_id.CreateIdWME("values").CreateFloatWME("object", 1.0)
-
-        prop_id = props_id.CreateIdWME("property")
-        prop_id.CreateStringWME("property-handle", "name")
-        prop_id.CreateStringWME("type", "visual")
-        prop_id.CreateIdWME("values").CreateFloatWME(self.handle.replace("-", "+").split("+")[0].lower(), 1.0)
-
-        if self.last_data["receptacle"]:
-            prop_id = props_id.CreateIdWME("property")
-            prop_id.CreateStringWME("property-handle", "receptacle")
-            prop_id.CreateStringWME("type", "visual")
-            prop_id.CreateIdWME("values").CreateFloatWME("receptacle", 1.0)
-
-        if self.last_data["pickupable"]:
-            prop_id = props_id.CreateIdWME("property")
-            prop_id.CreateStringWME("property-handle", "grabbable")
-            prop_id.CreateStringWME("type", "visual")
-            prop_id.CreateIdWME("values").CreateFloatWME("grabbable", 1.0)
-
-        if self.last_data["openable"]:
-            prop_id = props_id.CreateIdWME("property")
-            prop_id.CreateStringWME("property-handle", "door2")
-            prop_id.CreateStringWME("type", "visual")
-            vals_id = prop_id.CreateIdWME("values")
-
-            self.open_wme = SoarWME("open2", 0.0)
-            self.closed_wme = SoarWME("closed2", 0.0)
-            if self.last_data["isopen"]:
-                self.open_wme.set_value(1.0)
-            else:
-                self.closed_wme.set_value(1.0)
-            self.open_wme.add_to_wm(vals_id)
-            self.closed_wme.add_to_wm(vals_id)
+        for prop in self.properties.values():
+            prop.add_to_wm(props_id)
 
         svs_commands.append(SVSCommands.add_box(self.handle, self.bbox_pos, self.bbox_rot, self.bbox_scl))
         svs_commands.append(SVSCommands.add_tag(self.handle, "object-source", "perception"))
@@ -132,23 +127,16 @@ class WorldObject(object):
             svs_commands.append(SVSCommands.change_scl(self.handle, self.bbox_scl))
             self.scl_changed = False
 
-        if self.last_data["openable"]:
-            if self.last_data["isopen"]:
-                self.open_wme.set_value(1.0)
-                self.closed_wme.set_value(0.0)
-            else:
-                self.open_wme.set_value(0.0)
-                self.closed_wme.set_value(1.0)
-            self.open_wme.update_wm()
-            self.closed_wme.update_wm()
+        for prop in self.properties.values():
+            prop.update_wm()
 
     def remove_from_wm(self, svs_commands):
         if not self.added:
             return
 
         svs_commands.append(SVSCommands.delete(self.handle))
+        for prop in self.properties.values():
+            prop.remove_from_wm()
         self.obj_id.DestroyWME()
         self.obj_id = None
-        self.open_wme = None
-        self.closed_wme = None
         self.added = False

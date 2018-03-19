@@ -37,7 +37,7 @@ class RosieGUI(Frame):
 
     def init_simulator(self):
         self.sim = Ai2ThorSimulator()
-        self.sim.load()
+        self.sim.start()
 
     def init_soar_agent(self, config_file):
         self.agent = RosieThorAgent(config_file, self.sim)

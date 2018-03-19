@@ -7,7 +7,7 @@ import Python_sml_ClientInterface as sml
 
 from pysoarlib import SoarAgent, LanguageConnector
 
-#from ActuationConnector import ActuationConnector
+from ActuationConnector import ActuationConnector
 from PerceptionConnector import PerceptionConnector
 
 class RosieThorAgent(SoarAgent):
@@ -15,6 +15,6 @@ class RosieThorAgent(SoarAgent):
         SoarAgent.__init__(self, config_file)
 
         self.connectors["language"] = LanguageConnector(self)
-        #self.connectors["actuation"] = RosieThorActuationConnector(self)
+        self.connectors["actuation"] = ActuationConnector(self, sim)
         self.connectors["perception"] = PerceptionConnector(self, sim)
 

@@ -7,6 +7,7 @@ from WorldObjectManager import WorldObjectManager
 
 class PerceptionConnector(AgentConnector):
     # TODO: Implement eye position?
+    # TODO: Implement robot self
     def __init__(self, agent, sim):
         AgentConnector.__init__(self, agent)
         self.register_output_handler("modify-scene")
@@ -18,7 +19,9 @@ class PerceptionConnector(AgentConnector):
         svs_commands = []
         if not self.world.is_added():
             self.world.add_to_wm(input_link, svs_commands)
-        else:
+        elif self.sim.changed:
+            self.world.update_objects(self.sim.world)
+            self.sim.changed = False
             self.world.update_wm(svs_commands)
         if len(svs_commands) > 0:
             self.agent.agent.SendSVSInput("\n".join(svs_commands))

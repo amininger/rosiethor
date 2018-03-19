@@ -1,4 +1,5 @@
 from pysoarlib import *
+import re
 
 from ObjectProperty import ObjectProperty
 
@@ -58,8 +59,8 @@ class WorldObject(object):
         self.last_data = obj_data
         self.update_bbox(obj_data)
 
-        visibility = "visible" if obj_data["visible"] else "not-visible"
-        self.properties["visiblity"].set_value(visibility)
+        inreach = "inreach" if obj_data["visible"] else "not-inreach"
+        self.properties["inreach"].set_value(inreach)
 
         if self.last_data["openable"]:
             open_value = "open2" if obj_data["isopen"] else "closed2"
@@ -76,10 +77,10 @@ class WorldObject(object):
     def create_properties(self, obj_data):
         self.properties["category"] = ObjectProperty("category", "object")
 
-        obj_name = self.handle.replace("-", "+").split("+")[0].lower()
+        obj_name = re.match(r"[a-zA-Z]*", self.handle).group(0).lower()
         self.properties["name"] = ObjectProperty("name", obj_name)
 
-        self.properties["visiblity"] = ObjectProperty("visibility", "not-visible")
+        self.properties["inreach"] = ObjectProperty("inreach", "inreach")
 
         if obj_data["receptacle"]:
             self.properties["receptacle"] = ObjectProperty("receptacle", "receptacle")
@@ -101,10 +102,9 @@ class WorldObject(object):
 
         self.obj_id = parent_id.CreateIdWME("object")
         self.obj_id.CreateStringWME("object-handle", self.handle)
-        props_id = self.obj_id.CreateIdWME("properties")
 
         for prop in self.properties.values():
-            prop.add_to_wm(props_id)
+            prop.add_to_wm(self.obj_id)
 
         svs_commands.append(SVSCommands.add_box(self.handle, self.bbox_pos, self.bbox_rot, self.bbox_scl))
         svs_commands.append(SVSCommands.add_tag(self.handle, "object-source", "perception"))

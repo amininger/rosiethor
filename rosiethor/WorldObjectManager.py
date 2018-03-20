@@ -61,6 +61,13 @@ class WorldObjectManager(object):
             else:
                 self.objects[handle] = WorldObject(handle, obj_data)
 
+        # Don't remove an object currently being held
+        if len(current_observation["inventoryObjects"]) > 0:
+            perc_id = current_observation["inventoryObjects"][0]["objectId"]
+            handle = self.get_soar_handle(perc_id)
+            if handle in stale_objs:
+                stale_objs.remove(handle)
+
         # Remove all stale objects from WM
         for handle in stale_objs:
             self.objs_to_remove.add(self.objects[handle])

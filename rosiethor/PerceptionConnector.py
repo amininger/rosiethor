@@ -2,6 +2,7 @@ import sys
 
 from string import digits
 from pysoarlib import *
+from Robot import Robot
 
 from WorldObjectManager import WorldObjectManager
 
@@ -13,22 +14,28 @@ class PerceptionConnector(AgentConnector):
         self.register_output_handler("modify-scene")
         self.sim = sim
         self.world = WorldObjectManager()
+        self.robot = Robot(self.world)
 
     def on_input_phase(self, input_link):
-        self.world.update_objects(self.sim.world)
         svs_commands = []
         if not self.world.is_added():
+            self.world.update_objects(self.sim.world)
             self.world.add_to_wm(input_link, svs_commands)
+            self.robot.update(self.sim.world)
+            self.robot.add_to_wm(input_link, svs_commands)
         elif self.sim.changed:
             self.world.update_objects(self.sim.world)
+            self.robot.update(self.sim.world)
             self.sim.changed = False
             self.world.update_wm(svs_commands)
+            self.robot.update_wm(svs_commands)
         if len(svs_commands) > 0:
             self.agent.agent.SendSVSInput("\n".join(svs_commands))
 
     def on_init_soar(self):
         svs_commands = []
         self.world.remove_from_wm(svs_commands)
+        self.robot.remove_from_wm(svs_commands)
         if len(svs_commands) > 0:
             self.agent.agent.SendSVSInput("\n".join(svs_commands))
 

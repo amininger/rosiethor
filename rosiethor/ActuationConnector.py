@@ -80,7 +80,7 @@ class ActuationConnector(AgentConnector):
             return { "action":"LookDown" }
         raise CommandSyntaxError("look given unrecognized direction")
 
-    def process_pickup_command(root_id):
+    def process_pickup_command(self, root_id):
         obj_handle = root_id.GetChildString("object")
         if obj_handle == None:
             raise CommandSyntaxError("pick-up is missing ^object")
@@ -92,7 +92,7 @@ class ActuationConnector(AgentConnector):
         return { "action": "PickupObject", 
                 "objectId": world_obj.get_perception_id() }
 
-    def process_putdown_command(root_id):
+    def process_putdown_command(self, root_id):
         obj_handle = root_id.GetChildString("object")
         if obj_handle == None:
             raise CommandSyntaxError("put-down is missing ^object")
@@ -113,7 +113,7 @@ class ActuationConnector(AgentConnector):
                 "objectId": world_obj.get_perception_id(), 
                 "receptacleObjectId": world_rec.get_perception_id() }
 
-    def process_open_command(root_id):
+    def process_open_command(self, root_id):
         obj_handle = root_id.GetChildString("object")
         if obj_handle == None:
             raise CommandSyntaxError("open is missing ^object")
@@ -125,7 +125,7 @@ class ActuationConnector(AgentConnector):
         return { "action": "OpenObject", 
                 "objectId": world_obj.get_perception_id() }
 
-    def process_close_command(root_id):
+    def process_close_command(self, root_id):
         obj_handle = root_id.GetChildString("object")
         if obj_handle == None:
             raise CommandSyntaxError("close is missing ^object")

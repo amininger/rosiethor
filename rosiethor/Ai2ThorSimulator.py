@@ -13,6 +13,11 @@ class Ai2ThorSimulator:
         self.sim.reset('FloorPlan28')
 
         self.world = self.sim.step(dict(action='Initialize', gridSize=0.25)).metadata
+        self.world = self.sim.step(dict(action='Teleport', x=-1.5, y=0.98, z=-3.0)).metadata
+        self.world = self.sim.step(dict(action='RotateRight')).metadata
+        self.world = self.sim.step(dict(action='RotateRight')).metadata
+        self.world = self.sim.step(dict(action='LookDown')).metadata
+
 
     def save(self):
         world_info = json.dumps(self.world)
@@ -31,10 +36,8 @@ class Ai2ThorSimulator:
         if self.sim:
             self.world = self.sim.step(cmd).metadata
             self.changed = True
+
 #
-#            agent = e.metadata["agent"]
-#            pos = agent["position"]
-#            pos = ( pos["x"], pos["y"], pos["z"] )
 #            rot = agent["rotation"]
 #            rot = ( rot["x"] * DEG_TO_RAD, rot["y"] * DEG_TO_RAD, rot["z"] * DEG_TO_RAD )
 #            phi = -agent["cameraHorizon"] * DEG_TO_RAD

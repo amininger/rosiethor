@@ -27,7 +27,7 @@ class WorldObject(object):
         return self.handle
 
     def get_perception_id(self):
-        return str(self.last_data["objectId"].replace("|", ""))
+        return str(self.last_data["objectId"])
 
     def get_last_data(self):
         return self.last_data

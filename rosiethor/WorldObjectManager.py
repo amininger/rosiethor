@@ -13,7 +13,7 @@ class WorldObjectManager(object):
         self.next_obj_id = 1
 
     def get_object(self, handle):
-        return self.objects[handle]
+        return self.objects.get(handle, None)
 
     def get_objects(self):
         return self.objects.values()
@@ -41,12 +41,11 @@ class WorldObjectManager(object):
     def update_objects(self, current_observation):
         new_obj_data = {}
 
-        # Combine multiple observations that correspond to the same object into a list per id
         for obj_data in current_observation["objects"]:
-            perc_id = str(obj_data["objectId"].replace("|", ""))
+            perc_id = str(obj_data["objectId"])
             handle = self.object_links.get(perc_id, None)
             if handle == None:
-                handle = perc_id.replace("-", "+").split("+")[0] + str(self.next_obj_id)
+                handle = perc_id.split("|")[0] + str(self.next_obj_id)
                 self.next_obj_id += 1
                 self.object_links[perc_id] = handle
             new_obj_data[handle] = obj_data
@@ -100,11 +99,15 @@ class WorldObjectManager(object):
 
         self.needs_update = False
 
-    # TODO: This may not remove things from SVS
     def remove_from_wm(self, svs_commands):
         if self.added:
             for obj in self.objects.values():
-                obj.remove_from_wme(svs_commands)
+                obj.remove_from_wm(svs_commands)
+            for obj in self.objs_to_remove:
+                if obj not in self.objects.values():
+                    obj.remove_from_wm(svs_commands)
+            self.objs_to_remove.clear()
+
             self.objects_id.DestroyWME()
             self.objects_id = None
         self.added = False

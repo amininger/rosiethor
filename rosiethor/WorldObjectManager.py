@@ -20,7 +20,7 @@ class WorldObjectManager(object):
 
     def get_perception_id(self, handle):
         if handle in self.objects:
-            return self.objects[obj_handle].get_perception_id()
+            return self.objects[handle].get_perception_id()
         return None
 
     def get_soar_handle(self, perc_id):
@@ -72,6 +72,15 @@ class WorldObjectManager(object):
         for handle in stale_objs:
             self.objs_to_remove.add(self.objects[handle])
             del self.objects[handle]
+
+        # Update object containing information
+        for obj in self.objects.values():
+            obj_data = new_obj_data.get(obj.get_handle(), None)
+            if not obj_data or "receptacleObjectIds" not in obj_data:
+                continue
+
+            contained_handles = [ self.get_soar_handle(obj_id) for obj_id in obj_data["receptacleObjectIds"] ]
+            obj.set_contained_objects(contained_handles)
 
         self.needs_update = True
 

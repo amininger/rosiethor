@@ -1,11 +1,15 @@
 import ai2thor.controller
 import json
 
+from threading import Lock
+import traceback
+
 class Ai2ThorSimulator:
     def __init__(self):
         self.sim = None
         self.world = None
         self.changed = False
+        self.lock = Lock()
 
     def start(self):
         self.sim = ai2thor.controller.Controller()
@@ -34,8 +38,10 @@ class Ai2ThorSimulator:
 
     def exec_command(self, cmd):
         if self.sim:
+            #self.lock.acquire()
             self.world = self.sim.step(cmd).metadata
             self.changed = True
+            #self.lock.release()
 
 #
 #            rot = agent["rotation"]

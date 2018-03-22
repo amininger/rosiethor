@@ -9,6 +9,7 @@ class WorldObject(object):
         self.handle = handle
 
         self.properties = {}
+        self.contains_wmes = {}
 
         self.bbox_pos = [0, 0, 0]
         self.bbox_rot = [0, 0, 0]
@@ -66,6 +67,19 @@ class WorldObject(object):
             open_value = "open2" if obj_data["isopen"] else "closed2"
             self.properties["door2"].set_value(open_value)
 
+    def set_contained_objects(self, obj_handles):
+        for obj_h in obj_handles:
+            if obj_h not in self.contains_wmes:
+                self.contains_wmes[obj_h] = SoarWME("contains", obj_h)
+
+        to_remove = set()
+        for obj_h, wme in self.contains_wmes.iteritems():
+            if obj_h not in obj_handles:
+                wme.remove_from_wm()
+                to_remove.add(obj_h)
+        for obj_h in to_remove:
+            del self.contains_wmes[obj_h]
+
     def update_bbox(self, obj_data):
         pos = obj_data["position"]
         self.set_pos( (float(pos["x"]), float(pos["y"]), float(pos["z"])) )
@@ -106,6 +120,9 @@ class WorldObject(object):
         for prop in self.properties.values():
             prop.add_to_wm(self.obj_id)
 
+        for wme in self.contains_wmes.values():
+            wme.add_to_wm(self.obj_id)
+
         svs_commands.append(SVSCommands.add_box(self.handle, self.bbox_pos, self.bbox_rot, self.bbox_scl))
         svs_commands.append(SVSCommands.add_tag(self.handle, "object-source", "perception"))
         
@@ -130,6 +147,13 @@ class WorldObject(object):
         for prop in self.properties.values():
             prop.update_wm()
 
+        for wme in self.contains_wmes.values():
+            if wme.added:
+                wme.update_wm()
+            else:
+                wme.add_to_wm(self.obj_id)
+
+
     def remove_from_wm(self, svs_commands):
         if not self.added:
             return
@@ -137,6 +161,8 @@ class WorldObject(object):
         svs_commands.append(SVSCommands.delete(self.handle))
         for prop in self.properties.values():
             prop.remove_from_wm()
+        for wme in self.contains_wmes.values():
+            wme.remove_from_wm()
         self.obj_id.DestroyWME()
         self.obj_id = None
         self.added = False

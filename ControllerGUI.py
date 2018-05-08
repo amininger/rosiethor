@@ -2,22 +2,6 @@ from __future__ import print_function
 
 from tkinter import *
 
-#class SelectionFrame(Toplevel):
-#    def __init__(self, sim_robot, master=None):
-#        Toplevel.__init__(self, master)
-#
-#        self.variable = StringVar(self)
-#        self.variable.set(options[0])
-#
-#        self.menu = apply(OptionMenu, (self, self.variable) + tuple(options))
-#        self.menu.pack()
-#
-#        self.submit = Button(self, text="Ok")
-#        self.submit["command"] = lambda: self.command_fcn(self, self.sim_robot, self.variable.get())
-#        self.submit.pack()
-#
-
-
 class ControllerGUI(Toplevel):
     def create_buttons(self):
         turn_left = Button(self, text="L")

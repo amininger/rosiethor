@@ -10,7 +10,7 @@ class CommandSyntaxError(Exception):
 class ActuationConnector(AgentConnector):
     def __init__(self, agent, sim):
         AgentConnector.__init__(self, agent)
-        self.register_output_handler("perform-action")
+        self.add_output_command("perform-action")
         self.sim = sim
 
     def on_init_soar(self):
@@ -19,8 +19,8 @@ class ActuationConnector(AgentConnector):
     def on_input_phase(self, input_link):
         pass
 
-    def on_output_event(self, att_name, root_id):
-        if att_name == "perform-action":
+    def on_output_event(self, command_name, root_id):
+        if command_name == "perform-action":
             self.process_perform_action(root_id)
 
     def process_perform_action(self, root_id):

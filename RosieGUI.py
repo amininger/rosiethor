@@ -1,5 +1,5 @@
-from Tkinter import *
-import tkFont
+from tkinter import *
+import tkinter.font
 
 import sys
 
@@ -40,14 +40,14 @@ class RosieGUI(Frame):
         self.sim.start()
 
     def init_soar_agent(self, config_file):
-        self.agent = RosieThorAgent(config_file, self.sim)
+        self.agent = RosieThorAgent(self.sim, config_filename=config_file)
         self.agent.connectors["language"].register_message_callback(self.receive_message)
         self.agent.connect()
 
     def create_script_buttons(self):
         self.script = []
-        if self.agent.config.messages_file != None:
-            with open(self.agent.config.messages_file, 'r') as f:
+        if self.agent.messages_file != None:
+            with open(self.agent.messages_file, 'r') as f:
                 self.script = [ line.rstrip('\n') for line in f.readlines()]
 
         row = 0
@@ -102,7 +102,7 @@ class RosieGUI(Frame):
         controller_gui = ControllerGUI(self.sim, master=self)
 
 if len(sys.argv) == 1:
-    print "Need to specify rosie config file as argument"
+    print("Need to specify rosie config file as argument")
 else:
     root = Tk()
     rosie_gui = RosieGUI(sys.argv[1], master=root)

@@ -4,7 +4,7 @@ from soarutil import *
 current_time_ms = lambda: int(round(time.time() * 1000))
 
 def print_event_handler(eventID, self, agent, message):
-    print message 
+    print(message)
 
 
 # Init Agent
@@ -37,7 +37,7 @@ for i in range(4):
 
 agent.Commit()
 agent.RunSelf(1)
-print agent.ExecuteCommandLine("p i2 -d 4")
+print(agent.ExecuteCommandLine("p i2 -d 4"))
 
 # Shutdown
 agent.UnregisterForPrintEvent(print_event_callback_id)

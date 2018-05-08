@@ -11,7 +11,7 @@ class PerceptionConnector(AgentConnector):
     # TODO: Implement robot self
     def __init__(self, agent, sim):
         AgentConnector.__init__(self, agent)
-        self.register_output_handler("modify-scene")
+        self.add_output_command("modify-scene")
         self.sim = sim
         self.world = WorldObjectManager()
         self.robot = Robot(self.world)
@@ -39,8 +39,8 @@ class PerceptionConnector(AgentConnector):
         if len(svs_commands) > 0:
             self.agent.agent.SendSVSInput("\n".join(svs_commands))
 
-    def on_output_event(self, att_name, root_id):
-        if att_name == "modify-scene":
+    def on_output_event(self, command_name, root_id):
+        if command_name == "modify-scene":
             self.process_modify_scene_command(root_id)
     
     def process_modify_scene_command(self, root_id):

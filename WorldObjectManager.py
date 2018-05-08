@@ -53,7 +53,7 @@ class WorldObjectManager(object):
         stale_objs = set(self.objects.keys())
         
         # For each object, either update existing or create if new
-        for handle, obj_data in new_obj_data.iteritems():
+        for handle, obj_data in new_obj_data.items():
             if handle in self.objects:
                 wobj = self.objects[handle]
                 wobj.update(obj_data)

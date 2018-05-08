@@ -73,7 +73,7 @@ class WorldObject(object):
                 self.contains_wmes[obj_h] = SoarWME("contains", obj_h)
 
         to_remove = set()
-        for obj_h, wme in self.contains_wmes.iteritems():
+        for obj_h, wme in self.contains_wmes.items():
             if obj_h not in obj_handles:
                 wme.remove_from_wm()
                 to_remove.add(obj_h)

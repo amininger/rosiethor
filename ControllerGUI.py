@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-from Tkinter import *
+from tkinter import *
 
 #class SelectionFrame(Toplevel):
 #    def __init__(self, sim_robot, master=None):

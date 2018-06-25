@@ -1,5 +1,3 @@
-
-
 from pysoarlib import *
 from math import *
 

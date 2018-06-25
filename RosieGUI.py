@@ -3,9 +3,7 @@ import tkinter.font
 
 import sys
 
-from RosieThorAgent import RosieThorAgent
-from Ai2ThorSimulator import Ai2ThorSimulator
-from ControllerGUI import ControllerGUI
+from rosiethor import *
 
 class RosieGUI(Frame):
     def create_widgets(self):

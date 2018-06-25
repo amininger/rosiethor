@@ -2,9 +2,9 @@ import sys
 
 from string import digits
 from pysoarlib import *
-from Robot import Robot
 
-from WorldObjectManager import WorldObjectManager
+from .WorldObjectManager import WorldObjectManager
+from .Robot import Robot
 
 class PerceptionConnector(AgentConnector):
     # TODO: Implement eye position?

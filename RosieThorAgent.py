@@ -7,8 +7,8 @@ import Python_sml_ClientInterface as sml
 
 from pysoarlib import SoarAgent, LanguageConnector
 
-from ActuationConnector import ActuationConnector
-from PerceptionConnector import PerceptionConnector
+from .ActuationConnector import ActuationConnector
+from .PerceptionConnector import PerceptionConnector
 
 class RosieThorAgent(SoarAgent):
     def __init__(self, sim, config_filename=None, **kwargs):

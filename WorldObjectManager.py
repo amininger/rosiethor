@@ -1,4 +1,4 @@
-from WorldObject import WorldObject
+from .WorldObject import WorldObject
 
 class WorldObjectManager(object):
     def __init__(self):

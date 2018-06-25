@@ -1,7 +1,7 @@
 from pysoarlib import *
 import re
 
-from ObjectProperty import ObjectProperty
+from .ObjectProperty import ObjectProperty
 
 
 class WorldObject(object):

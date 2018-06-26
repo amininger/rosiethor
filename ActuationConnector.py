@@ -4,6 +4,8 @@ import traceback
 from string import digits
 from pysoarlib import *
 
+from .NavigationHelper import NavigationHelper
+
 class CommandSyntaxError(Exception):
     pass
 

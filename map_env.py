@@ -23,8 +23,10 @@ class GridMapper:
 
         grid = [ [ (" " if (row, col) in self.visited else "X") for col in range( min_col-1, max_col+2 ) ] for row in range(min_row-1, max_row+2) ]
         with open(map_name + ".map", 'w') as f:
-            f.write(str(min_row-1) + " " + str(min_col-1) + "\n")
-            f.write(str(max_row-min_row+2) + " " + str(max_col-min_col+2) + "\n")
+            f.write("Name: " + map_name + "\n")
+            f.write("Grid Size: " + str(grid_size) + "\n")
+            f.write("Min Row/Col: " + str(min_row-1) + " " + str(min_col-1) + "\n")
+            f.write("Max Row/Col: " + str(max_row-min_row+2) + " " + str(max_col-min_col+2) + "\n")
             for row in grid:
                 f.write("".join(row) + "\n")
 

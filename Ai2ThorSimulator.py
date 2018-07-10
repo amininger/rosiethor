@@ -8,8 +8,8 @@ class Ai2ThorSimulator:
     def __init__(self):
         self.sim = None
         self.world = None
-        self.changed = False
         self.lock = Lock()
+        self.listeners = set()
 
     def start(self):
         self.sim = ai2thor.controller.Controller()
@@ -33,6 +33,9 @@ class Ai2ThorSimulator:
             world_info = f.read()
             self.world = json.loads(world_info)
 
+    def add_world_change_listener(self, listener):
+        self.listeners.add(listener)
+
     def exec_simple_command(self, cmd):
         return self.exec_command(dict(action=cmd))
 
@@ -40,7 +43,8 @@ class Ai2ThorSimulator:
         if self.sim:
             #self.lock.acquire()
             self.world = self.sim.step(cmd).metadata
-            self.changed = True
+            for listener in self.listeners:
+                listener(self.world)
             #self.lock.release()
 
 #

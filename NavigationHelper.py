@@ -2,25 +2,36 @@ from math import *
 
 from Ai2ThorSimulator import Ai2ThorSimulator
 
+def get_next_param(f):
+    return f.readline().split(":")[1].strip()
+
 class NavigationHelper:
     def __init__(self, map_name="FloorPlan28", grid_size=0.25):
         self.grid_size = grid_size
 
         with open(map_name + ".map", 'r') as f:
-            corner = f.readline().split(" ")
+            name = get_next_param(f)
+            map_gs = float(get_next_param(f))
+            corner = get_next_param(f).split(" ")
             self.min_row = int(corner[0])
             self.min_col = int(corner[1])
 
-            dims = f.readline().split(" ")
+            dims = get_next_param(f).split(" ")
             self.rows = int(dims[0])
             self.cols = int(dims[1])
 
             self.grid = [ [ c for c in f.readline()[:-1] ] for row in range(self.rows+1) ]
+            print(name)
+            print(map_gs)
+            print(corner)
+            print(dims)
+            print(self.grid)
 
-        self.sim = Ai2ThorSimulator()
-        self.sim.start()
 
-        print(self.get_grid_square(self.sim.world["agent"]))
+        #self.sim = Ai2ThorSimulator()
+        #self.sim.start()
+
+        #print(self.get_grid_square(self.sim.world["agent"]))
 
     def get_grid_square(self, obj):
         z = obj["position"]["z"]
@@ -31,7 +42,7 @@ class NavigationHelper:
         col = int(floor(x/self.grid_size)) - self.min_col
         return (row, col)
 
-#nav = NavigationHelper()
+nav = NavigationHelper()
 
 #
 #

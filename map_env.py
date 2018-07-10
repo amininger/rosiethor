@@ -5,12 +5,20 @@ from tkinter import *
 
 from rosiethor import *
 
+def get_info(sim):
+    agent = sim.world["agent"]
+    print( agent["position"]["x"], agent["position"]["z"], agent["rotation"]["y"])
+
 class GridMapper:
     def __init__(self, map_name="FloorPlan28", grid_size=0.25):
         self.grid_size = grid_size
 
         self.sim = Ai2ThorSimulator()
         self.sim.start()
+
+        # Make sure facing same direction
+        while int(self.sim.world["agent"]["rotation"]["y"]) != 0:
+            self.sim.exec_simple_command("RotateRight")
 
         cur_node = self.get_cur_node()
         self.visited = set()
@@ -64,9 +72,9 @@ class GridMapper:
                 self.sim.exec_simple_command("MoveLeft")
 
     def get_cur_node(self):
-        z = self.sim.world["agent"]["position"]["z"]
-        row = int(floor((z - self.grid_size/2)/self.grid_size))
         x = self.sim.world["agent"]["position"]["x"]
+        y = self.sim.world["agent"]["position"]["z"]
+        row = int(floor((y - self.grid_size/2)/self.grid_size))
         col = int(floor((x - self.grid_size/2)/self.grid_size))
         return (row, col)
 

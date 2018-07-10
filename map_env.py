@@ -35,28 +35,28 @@ class GridMapper:
         self.visited.add(node)
         (row, col) = node
         # Try Moving Ahead
-        if ( row-1, col ) not in self.visited:
+        if ( row+1, col ) not in self.visited:
             self.sim.exec_simple_command("MoveAhead")
             new_node = self.get_cur_node()
             if new_node[0] != row or new_node[1] != col:
                 self.explore_node(new_node, depth + "  ")
                 self.sim.exec_simple_command("MoveBack")
         # Try Moving Back
-        if ( row+1, col ) not in self.visited:
+        if ( row-1, col ) not in self.visited:
             self.sim.exec_simple_command("MoveBack")
             new_node = self.get_cur_node()
             if new_node[0] != row or new_node[1] != col:
                 self.explore_node(new_node, depth + "  ")
                 self.sim.exec_simple_command("MoveAhead")
         # Try Moving Left
-        if ( row, col+1 ) not in self.visited:
+        if ( row, col-1 ) not in self.visited:
             self.sim.exec_simple_command("MoveLeft")
             new_node = self.get_cur_node()
             if new_node[0] != row or new_node[1] != col:
                 self.explore_node(new_node, depth + "  ")
                 self.sim.exec_simple_command("MoveRight")
         # Try Moving Right
-        if ( row, col-1 ) not in self.visited:
+        if ( row, col+1 ) not in self.visited:
             self.sim.exec_simple_command("MoveRight")
             new_node = self.get_cur_node()
             if new_node[0] != row or new_node[1] != col:
@@ -65,9 +65,9 @@ class GridMapper:
 
     def get_cur_node(self):
         z = self.sim.world["agent"]["position"]["z"]
-        row = int(floor(z/self.grid_size))
+        row = int(floor((z - self.grid_size/2)/self.grid_size))
         x = self.sim.world["agent"]["position"]["x"]
-        col = int(floor(x/self.grid_size))
+        col = int(floor((x - self.grid_size/2)/self.grid_size))
         return (row, col)
 
     def get_neighbors(self, node):

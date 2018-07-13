@@ -12,6 +12,9 @@ class ObjectProperty(object):
         self.values_id = None
         self.value_wme = None
 
+    def copy(self):
+        return ObjectProperty(self.name, self.value)
+
     def set_value(self, value):
         if value != self.value:
             self.value = value

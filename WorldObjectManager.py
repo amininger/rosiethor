@@ -1,16 +1,16 @@
 from .WorldObject import WorldObject
 
 class WorldObjectManager(object):
-    def __init__(self):
+    def __init__(self, world):
         self.objects = {}
         self.objs_to_remove = set()
-        self.needs_update = False
 
         self.object_links = {}
 
-        self.added = False
         self.objects_id = None
         self.next_obj_id = 1
+        self.wm_dirty = False
+        self.update(world)
 
     def get_object(self, handle):
         return self.objects.get(handle, None)
@@ -30,18 +30,16 @@ class WorldObjectManager(object):
         self.object_links[src_handle] = dest_handle
         if src_handle in self.objects:
             wobj = self.objects[src_handle]
-            obj_data = wobj.get_last_data()
             self.objs_to_remove.append(wobj)
             del self.objects[src_handle]
             if dest_handle not in self.objects:
-                self.objects[dest_handle] = WorldObject(dest_handle, obj_data)
+                self.objects[dest_handle] = wobj.copy(dest_handle)
+        self.wm_dirty = True
 
-        self.needs_update = True
-
-    def update_objects(self, current_observation):
+    def update(self, world_data):
         new_obj_data = {}
 
-        for obj_data in current_observation["objects"]:
+        for obj_data in world_data["objects"]:
             perc_id = str(obj_data["objectId"])
             handle = self.object_links.get(perc_id, None)
             if handle == None:
@@ -62,8 +60,8 @@ class WorldObjectManager(object):
                 self.objects[handle] = WorldObject(handle, obj_data)
 
         # Don't remove an object currently being held
-        if len(current_observation["inventoryObjects"]) > 0:
-            perc_id = current_observation["inventoryObjects"][0]["objectId"]
+        if len(world_data["inventoryObjects"]) > 0:
+            perc_id = world_data["inventoryObjects"][0]["objectId"]
             handle = self.get_soar_handle(perc_id)
             if handle in stale_objs:
                 stale_objs.remove(handle)
@@ -82,24 +80,24 @@ class WorldObjectManager(object):
             contained_handles = [ self.get_soar_handle(obj_id) for obj_id in obj_data["receptacleObjectIds"] ]
             obj.set_contained_objects(contained_handles)
 
-        self.needs_update = True
+        self.wm_dirty = True
 
 
     #### METHODS TO UPDATE WORKING MEMORY ####
     def is_added(self):
-        return self.added
+        return (self.objects_id != None)
 
     def add_to_wm(self, parent_id, svs_commands):
-        if self.added:
+        if self.is_added():
             return 
         self.objects_id = parent_id.CreateIdWME("objects")
         for obj in self.objects.values():
             obj.add_to_wm(self.objects_id, svs_commands)
 
-        self.added = True
+        self.wm_dirty = False
 
     def update_wm(self, svs_commands):
-        if not self.added or not self.needs_update:
+        if not self.is_added():
             return
         for obj in self.objects.values():
             if not obj.is_added():
@@ -112,11 +110,10 @@ class WorldObjectManager(object):
         for obj in self.objs_to_remove:
             obj.remove_from_wm(svs_commands)
         self.objs_to_remove.clear()
-
-        self.needs_update = False
+        self.wm_dirty = False
 
     def remove_from_wm(self, svs_commands):
-        if self.added:
+        if self.is_added():
             for obj in self.objects.values():
                 obj.remove_from_wm(svs_commands)
             for obj in self.objs_to_remove:
@@ -126,4 +123,3 @@ class WorldObjectManager(object):
 
             self.objects_id.DestroyWME()
             self.objects_id = None
-        self.added = False

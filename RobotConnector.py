@@ -1,6 +1,8 @@
 from pysoarlib import *
 from math import *
 
+import sys, traceback, re
+
 VIEW_DIST = 3.8
 VIEW_ANGLE = 1.5708 * 0.8
 VIEW_HEIGHT = 2.0
@@ -21,7 +23,10 @@ class RobotDataUnwrapper:
     def held_obj(self):
         if len(self.world["inventoryObjects"]) > 0:
             return self.world["inventoryObjects"][0]["objectId"]
-        return "none"
+        return None
+
+class CommandSyntaxError(Exception):
+    pass
 
 class RobotConnector(AgentConnector):
     def __init__(self, agent, sim):
@@ -57,14 +62,16 @@ class RobotConnector(AgentConnector):
         for d, pose_wme in enumerate(self.pose_wmes):
             pose_wme.set_value(pose[d])
 
-        self.held_object.set_value(unwrapper.held_obj())
-        #self.held_object.set_value(self.obj_manager.get_soar_handle(held_obj))
+        held_obj = unwrapper.held_obj()
+        held_obj_h = self.agent.connectors["perception"].objects.get_soar_handle(held_obj) if held_obj else "none"
+        self.held_object.set_value(held_obj_h)
 
         self.wm_dirty = True
 
     def on_init_soar(self):
         svs_commands = []
         self.remove_from_wm(svs_commands)
+        self.agent.agent.SendSVSInput("\n".join(svs_commands))
 
     def on_input_phase(self, input_link):
         svs_commands = []
@@ -73,6 +80,8 @@ class RobotConnector(AgentConnector):
         elif self.wm_dirty:
             self.update_wm(svs_commands)
             self.wm_dirty = False
+        if len(svs_commands) > 0:
+            self.agent.agent.SendSVSInput("\n".join(svs_commands))
 
     #################################################
     #
@@ -132,9 +141,6 @@ class RobotConnector(AgentConnector):
     # HANDLING SOAR COMMANDS
     #
     ################################################
-
-    class CommandSyntaxError(Exception):
-        pass
 
     def on_output_event(self, command_name, root_id):
         if command_name == "perform-action":
@@ -202,7 +208,7 @@ class RobotConnector(AgentConnector):
         if obj_handle == None:
             raise CommandSyntaxError("pick-up is missing ^object")
 
-        world_obj = self.agent.connectors["perception"].world.get_object(obj_handle)
+        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
         if world_obj == None:
             raise CommandSyntaxError("pick-up given unrecognized object " + obj_handle)
 
@@ -214,7 +220,7 @@ class RobotConnector(AgentConnector):
         if obj_handle == None:
             raise CommandSyntaxError("put-down is missing ^object")
 
-        world_obj = self.agent.connectors["perception"].world.get_object(obj_handle)
+        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
         if world_obj == None:
             raise CommandSyntaxError("put-down given unrecognized object " + obj_handle)
 
@@ -222,7 +228,7 @@ class RobotConnector(AgentConnector):
         if rec_handle == None:
             raise CommandSyntaxError("put-down is missing ^receptacle")
 
-        world_rec = self.agent.connectors["perception"].world.get_object(rec_handle)
+        world_rec = self.agent.connectors["perception"].objects.get_object(rec_handle)
         if world_rec == None:
             raise CommandSyntaxError("put-down given unrecognized receptacle " + rec_handle)
 
@@ -235,7 +241,7 @@ class RobotConnector(AgentConnector):
         if obj_handle == None:
             raise CommandSyntaxError("open is missing ^object")
 
-        world_obj = self.agent.connectors["perception"].world.get_object(obj_handle)
+        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
         if world_obj == None:
             raise CommandSyntaxError("open given unrecognized object " + obj_handle)
 
@@ -247,7 +253,7 @@ class RobotConnector(AgentConnector):
         if obj_handle == None:
             raise CommandSyntaxError("close is missing ^object")
 
-        world_obj = self.agent.connectors["perception"].world.get_object(obj_handle)
+        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
         if world_obj == None:
             raise CommandSyntaxError("close given unrecognized object " + obj_handle)
 

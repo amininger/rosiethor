@@ -13,14 +13,15 @@ class Ai2ThorSimulator:
 
     def start(self):
         self.sim = ai2thor.controller.Controller()
+        self.sim.local_executable_path = "/home/mininger/sf/research/rosie-project/ai2thor/unity/ai2thor_sim.x86_64"
         self.sim.start()
-        self.sim.reset('FloorPlan28')
+        self.sim.reset('simple_kitchen')
 
         self.world = self.sim.step(dict(action='Initialize', gridSize=0.25)).metadata
-        #self.world = self.sim.step(dict(action='Teleport', x=-1.5, y=0.98, z=-3.0)).metadata
-        #self.world = self.sim.step(dict(action='RotateRight')).metadata
-        #self.world = self.sim.step(dict(action='RotateRight')).metadata
-        #self.world = self.sim.step(dict(action='LookDown')).metadata
+        self.world = self.sim.step(dict(action='Teleport', x=-1.5, y=0.98, z=-3.0)).metadata
+        self.world = self.sim.step(dict(action='RotateRight')).metadata
+        self.world = self.sim.step(dict(action='RotateRight')).metadata
+        self.world = self.sim.step(dict(action='LookDown')).metadata
 
 
     def save(self):

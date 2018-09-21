@@ -87,5 +87,5 @@ class GridMapper:
         n.add( (row-1, col-1) )
         return n
 
-mapper = GridMapper()
+mapper = GridMapper(map_name="testing")
 

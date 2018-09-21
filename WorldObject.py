@@ -40,10 +40,27 @@ class ObjectDataUnwrapper:
     def inreach_state(self):
         return "inreach" if self.data["visible"] else "not-inreach"
 
+    def temperature(self):
+        if float(self.data["temperature"]) > 100:
+            return "hot"
+        elif float(self.data["temperature"]) > 60:
+            return "warm"
+        elif float(self.data["temperature"]) > 30:
+            return "cool"
+        return "cold"
+
     def open_state(self):
         if not self.data["openable"]:
             return None
         return "open2" if self.data["isopen"] else "closed2"
+
+    def activated_state(self):
+        if not self.data["activatable"]:
+            return None
+        return "activated" if self.data["isactivate"] else "not-activated"
+
+    def timeleft(self):
+        return str(self.data["timeleft"])
 
     def contained_objects(self):
         return [ str(obj_h) for obj_h in self.data["receptacleObjectIds"] ]
@@ -120,9 +137,14 @@ class WorldObject(object):
             self.create_properties(unwrapper)
 
         self.properties["inreach"].set_value(unwrapper.inreach_state())
+        self.properties["temperature"].set_value(unwrapper.temperature())
+        self.properties["timeleft"].set_value(unwrapper.timeleft())
 
         if "door2" in self.properties:
             self.properties["door2"].set_value(unwrapper.open_state())
+
+        if "activation" in self.properties:
+            self.properties["activation"].set_value(unwrapper.activated_state())
 
 
     def set_contained_objects(self, obj_handles):
@@ -151,6 +173,10 @@ class WorldObject(object):
 
         self.properties["inreach"] = ObjectProperty("inreach", "inreach")
 
+        self.properties["temperature"] = ObjectProperty("temperature", unwrapper.temperature())
+
+        self.properties["timeleft"] = ObjectProperty("timeleft", unwrapper.timeleft())
+
         if unwrapper.is_receptacle():
             self.properties["receptacle"] = ObjectProperty("receptacle", "receptacle")
 
@@ -159,6 +185,9 @@ class WorldObject(object):
 
         if unwrapper.open_state() != None:
             self.properties["door2"] = ObjectProperty("door2", "closed2")
+
+        if unwrapper.activated_state() != None:
+            self.properties["activation"] = ObjectProperty("activation", "not-activated")
 
     ### Methods for managing working memory structures ###
 

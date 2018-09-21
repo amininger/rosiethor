@@ -1,8 +1,10 @@
 {
     "agent": {
+        "activatable": false,
         "bounds3D": [],
-        "cameraHorizon": 30.000003814697266,
+        "cameraHorizon": 0.0,
         "distance": 0.0,
+        "isactivate": false,
         "isopen": false,
         "name": "agent",
         "objectId": "",
@@ -12,18 +14,20 @@
         "pickupable": false,
         "pivotSimObjs": [],
         "position": {
-            "x": -1.5,
-            "y": 0.9799984693527222,
-            "z": -3.0
+            "x": -1.25,
+            "y": 0.9799986481666565,
+            "z": -2.0
         },
         "receptacle": false,
         "receptacleCount": 0,
         "receptacleObjectIds": [],
         "rotation": {
             "x": 0.0,
-            "y": 180.0,
+            "y": 90.0,
             "z": 0.0
         },
+        "temperature": 0.0,
+        "timeleft": 0.0,
         "visible": false
     },
     "agentId": 0,
@@ -34,10 +38,11 @@
     "errorCode": "",
     "errorMessage": "",
     "inventoryObjects": [],
-    "lastAction": "LookDown",
+    "lastAction": "RotateRight",
     "lastActionSuccess": true,
     "objects": [
         {
+            "activatable": false,
             "bounds3D": [
                 -2.5750010013580322,
                 0.8563164472579956,
@@ -47,7 +52,8 @@
                 -3.3069992065429688
             ],
             "cameraHorizon": 0.0,
-            "distance": 0.8485867977142334,
+            "distance": 1.8210160732269287,
+            "isactivate": false,
             "isopen": false,
             "name": "Tabletop",
             "objectId": "TableTop|-02.08|+00.94|-03.62",
@@ -69,87 +75,23 @@
                 "y": 90.0,
                 "z": 0.0
             },
-            "visible": true
-        },
-        {
-            "bounds3D": [
-                -0.2521742284297943,
-                1.4949759244918823,
-                -2.831829071044922,
-                -0.05024271458387375,
-                1.5067294836044312,
-                -2.6298975944519043
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.4685547351837158,
-            "isopen": false,
-            "name": "Plate",
-            "objectId": "Plate|-00.15|+01.49|-02.73",
-            "objectType": "Plate",
-            "openable": false,
-            "parentReceptacle": "Cabinet|-00.33|+01.89|-02.51",
-            "pickupable": true,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.15120847523212433,
-                "y": 1.494760513305664,
-                "z": -2.730863332748413
-            },
-            "receptacle": false,
-            "receptacleCount": 0,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": -1.0245284101983998e-05,
-                "y": 0.0,
-                "z": 0.0
-            },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
+            "activatable": false,
             "bounds3D": [
-                -0.6563448309898376,
-                0.8580825328826904,
-                -2.015467643737793,
-                -0.576196014881134,
-                0.9382582902908325,
-                -1.9353333711624146
+                -1.3571513891220093,
+                0.929940938949585,
+                -3.5573203563690186,
+                -1.2933484315872192,
+                0.9833731651306152,
+                -3.4935271739959717
             ],
             "cameraHorizon": 0.0,
-            "distance": 1.354519248008728,
-            "isopen": false,
-            "name": "StoveKnob2_Range2",
-            "objectId": "StoveKnob|-00.62|+00.90|-01.98",
-            "objectType": "StoveKnob",
-            "openable": false,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.6176999807357788,
-                "y": 0.8996000289916992,
-                "z": -1.9753999710083008
-            },
-            "receptacle": false,
-            "receptacleCount": 0,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 315.0,
-                "y": 89.97400665283203,
-                "z": 180.03199768066406
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -1.3614451885223389,
-                0.9283196926116943,
-                -3.5663928985595703,
-                -1.2814817428588867,
-                0.9905622005462646,
-                -3.486574649810791
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 0.5577342510223389,
+            "distance": 1.5288124084472656,
+            "isactivate": false,
             "isopen": false,
             "name": "Tomato",
             "objectId": "Tomato|-01.32|+00.93|-03.53",
@@ -171,43 +113,12 @@
                 "y": 0.0,
                 "z": 0.0
             },
-            "visible": true
-        },
-        {
-            "bounds3D": [
-                -0.7945087552070618,
-                0.07984550297260284,
-                -3.400216579437256,
-                -0.5677620768547058,
-                0.12984557449817657,
-                -3.1494078636169434
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.244011402130127,
-            "isopen": false,
-            "name": "Pan1",
-            "objectId": "Pan|-00.68|+00.08|-03.27",
-            "objectType": "Pan",
-            "openable": false,
-            "parentReceptacle": "Cabinet|-00.63|+00.39|-03.01",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.6810178160667419,
-                "y": 0.08484554290771484,
-                "z": -3.274834156036377
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": -6.1288878896448296e-06,
-                "y": 280.44842529296875,
-                "z": 1.398907170369057e-05
-            },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
+            "activatable": false,
             "bounds3D": [
                 -0.21095620095729828,
                 0.9303669929504395,
@@ -217,7 +128,8 @@
                 -2.8814303874969482
             ],
             "cameraHorizon": 0.0,
-            "distance": 1.3471235036849976,
+            "distance": 1.4419174194335938,
+            "isactivate": false,
             "isopen": false,
             "name": "Container",
             "objectId": "Container|-00.16|+00.93|-02.94",
@@ -239,9 +151,12 @@
                 "y": 0.0,
                 "z": 0.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
+            "activatable": false,
             "bounds3D": [
                 -0.40836191177368164,
                 0.14085793495178223,
@@ -251,7 +166,8 @@
                 -0.5005106925964355
             ],
             "cameraHorizon": 0.0,
-            "distance": 2.703022003173828,
+            "distance": 1.8407412767410278,
+            "isactivate": false,
             "isopen": false,
             "name": "Fridge1",
             "objectId": "Fridge|-00.22|00.00|-00.83",
@@ -285,43 +201,12 @@
                 "y": 270.0,
                 "z": 0.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
-            "bounds3D": [
-                -0.6255507469177246,
-                0.8067288994789124,
-                -2.7551281452178955,
-                -0.38278937339782715,
-                0.826447069644928,
-                -2.7230093479156494
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.0634560585021973,
-            "isopen": false,
-            "name": "Fork1",
-            "objectId": "Fork|-00.48|+00.81|-02.74",
-            "objectType": "Fork",
-            "openable": false,
-            "parentReceptacle": "Cabinet|-00.48|+00.78|-02.74",
-            "pickupable": true,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.48289254307746887,
-                "y": 0.8116353750228882,
-                "z": -2.7390687465667725
-            },
-            "receptacle": false,
-            "receptacleCount": 0,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": -1.0245284101983998e-05,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
+            "activatable": false,
             "bounds3D": [
                 -0.553860604763031,
                 0.2711416482925415,
@@ -331,7 +216,8 @@
                 -0.00913935899734497
             ],
             "cameraHorizon": 0.0,
-            "distance": 3.1738433837890625,
+            "distance": 2.2307581901550293,
+            "isactivate": false,
             "isopen": false,
             "name": "GarbageCan",
             "objectId": "GarbageCan|-00.36|00.00|-00.21",
@@ -353,43 +239,12 @@
                 "y": 0.0,
                 "z": 0.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
-            "bounds3D": [
-                -0.8528260588645935,
-                0.9309259057044983,
-                -3.9095852375030518,
-                -0.714918315410614,
-                1.0337982177734375,
-                -3.7689216136932373
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.1183069944381714,
-            "isopen": false,
-            "name": "CoffeeCup1",
-            "objectId": "Mug|-00.78|+00.93|-03.85",
-            "objectType": "Mug",
-            "openable": false,
-            "parentReceptacle": "",
-            "pickupable": true,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.7749999761581421,
-                "y": 0.9301429986953735,
-                "z": -3.8499999046325684
-            },
-            "receptacle": false,
-            "receptacleCount": 0,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 0.0,
-                "y": 50.4573860168457,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
+            "activatable": false,
             "bounds3D": [
                 -0.19851021468639374,
                 0.9635931253433228,
@@ -399,7 +254,8 @@
                 -2.7334327697753906
             ],
             "cameraHorizon": 0.0,
-            "distance": 1.3879802227020264,
+            "distance": 1.3442987203598022,
+            "isactivate": false,
             "isopen": false,
             "name": "Knife1",
             "objectId": "Knife|-00.14|+01.12|-02.75",
@@ -421,77 +277,12 @@
                 "y": 274.3685607910156,
                 "z": 270.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
-            "bounds3D": [
-                -0.5118284225463867,
-                0.9333651065826416,
-                -1.9365284442901611,
-                -0.3299715518951416,
-                0.9572690725326538,
-                -1.754671573638916
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.5810065269470215,
-            "isopen": false,
-            "name": "GasStoveTop_Range1",
-            "objectId": "StoveBurner|-00.42|+00.93|-01.85",
-            "objectType": "StoveBurner",
-            "openable": false,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.42089998722076416,
-                "y": 0.9301429986953735,
-                "z": -1.8456000089645386
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.2595430612564087,
-                1.4952101707458496,
-                -1.5506460666656494,
-                -0.06338601559400558,
-                1.5541222095489502,
-                -1.3544890880584717
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 2.1099917888641357,
-            "isopen": false,
-            "name": "Bowl",
-            "objectId": "Bowl|-00.16|+01.50|-01.45",
-            "objectType": "Bowl",
-            "openable": false,
-            "parentReceptacle": "Cabinet|-00.34|+01.89|-01.29",
-            "pickupable": true,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.16146452724933624,
-                "y": 1.495596170425415,
-                "z": -1.45256769657135
-            },
-            "receptacle": false,
-            "receptacleCount": 0,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": -1.0245284101983998e-05,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
+            "activatable": false,
             "bounds3D": [
                 -0.6566448211669922,
                 0.8584824800491333,
@@ -501,7 +292,8 @@
                 -2.2489333152770996
             ],
             "cameraHorizon": 0.0,
-            "distance": 1.1357133388519287,
+            "distance": 0.6995318531990051,
+            "isactivate": false,
             "isopen": false,
             "name": "StoveKnob2_Range4",
             "objectId": "StoveKnob|-00.62|+00.90|-02.29",
@@ -523,9 +315,50 @@
                 "y": 89.97400665283203,
                 "z": 180.03199768066406
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
+            "activatable": false,
+            "bounds3D": [
+                -2.631635904312134,
+                0.0006269514560699463,
+                -0.5860762000083923,
+                -2.1034586429595947,
+                0.874946117401123,
+                -0.019182145595550537
+            ],
+            "cameraHorizon": 0.0,
+            "distance": 2.23416805267334,
+            "isactivate": false,
+            "isopen": false,
+            "name": "Chair5",
+            "objectId": "Chair|-02.37|00.00|-00.34",
+            "objectType": "Chair",
+            "openable": false,
+            "parentReceptacle": "",
+            "pickupable": false,
+            "pivotSimObjs": [],
+            "position": {
+                "x": -2.371999979019165,
+                "y": -5.653919288306497e-07,
+                "z": -0.33500000834465027
+            },
+            "receptacle": false,
+            "receptacleCount": 0,
+            "receptacleObjectIds": [],
+            "rotation": {
+                "x": 0.0,
+                "y": 74.23304748535156,
+                "z": 0.0
+            },
+            "temperature": 77.0,
+            "timeleft": 0.0,
+            "visible": false
+        },
+        {
+            "activatable": false,
             "bounds3D": [
                 -0.2558910846710205,
                 0.9301429390907288,
@@ -535,7 +368,8 @@
                 -1.2920067310333252
             ],
             "cameraHorizon": 0.0,
-            "distance": 2.044980525970459,
+            "distance": 1.217381477355957,
+            "isactivate": false,
             "isopen": false,
             "name": "Toaster1",
             "objectId": "Toaster|-00.16|+00.93|-01.45",
@@ -557,203 +391,23 @@
                 "y": 0.0,
                 "z": 0.0
             },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -1.665656328201294,
-                0.924782931804657,
-                -3.7827463150024414,
-                -1.5564723014831543,
-                1.0276552438735962,
-                -3.6940536499023438
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 0.7509962320327759,
-            "isopen": false,
-            "name": "CoffeeCup1",
-            "objectId": "Mug|-01.63|+00.92|-03.74",
-            "objectType": "Mug",
-            "openable": false,
-            "parentReceptacle": "",
-            "pickupable": true,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -1.625,
-                "y": 0.9240000247955322,
-                "z": -3.7383999824523926
-            },
-            "receptacle": false,
-            "receptacleCount": 0,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 0.0,
-                "y": 180.0,
-                "z": 0.0
-            },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": true
         },
         {
+            "activatable": false,
             "bounds3D": [
-                -0.29263991117477417,
-                1.5244276523590088,
-                -2.8414499759674072,
-                -0.16177701950073242,
-                2.2490928173065186,
-                -2.5138638019561768
+                -0.9107891321182251,
+                0.3888453245162964,
+                -3.368778705596924,
+                -0.9107891321182251,
+                0.3888453245162964,
+                -3.368778705596924
             ],
             "cameraHorizon": 0.0,
-            "distance": 1.5601235628128052,
-            "isopen": false,
-            "name": "Cabinet",
-            "objectId": "Cabinet|-00.33|+01.89|-02.51",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [
-                {
-                    "objectId": "Plate|-00.15|+01.49|-02.73",
-                    "pivotId": 0
-                }
-            ],
-            "position": {
-                "x": -0.3272084593772888,
-                "y": 1.8867602348327637,
-                "z": -2.5138635635375977
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [
-                "Plate|-00.15|+01.49|-02.73"
-            ],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.6222020983695984,
-                0.7248871326446533,
-                -1.614982008934021,
-                -0.6195090413093567,
-                0.8706167936325073,
-                -1.2865678071975708
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.8543426990509033,
-            "isopen": false,
-            "name": "Drawer",
-            "objectId": "Cabinet|-00.50|+00.78|-01.45",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [
-                {
-                    "objectId": "Spoon|-00.50|+00.78|-01.45",
-                    "pivotId": 0
-                }
-            ],
-            "position": {
-                "x": -0.5008437633514404,
-                "y": 0.7795612812042236,
-                "z": -1.450774908065796
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [
-                "Spoon|-00.50|+00.78|-01.45"
-            ],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.5953136682510376,
-                0.09301626682281494,
-                -1.6149822473526,
-                -0.4644508361816406,
-                0.6846745014190674,
-                -1.3194092512130737
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.739207148551941,
-            "isopen": false,
-            "name": "Cabinet",
-            "objectId": "Cabinet|-00.63|+00.39|-01.61",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.6298819780349731,
-                "y": 0.3888453245162964,
-                "z": -1.6149822473526
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -1.2881675958633423,
-                0.7248872518539429,
-                -3.3793442249298096,
-                -1.0107892751693726,
-                0.8706167936325073,
-                -3.376683473587036
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 0.6402174234390259,
-            "isopen": false,
-            "name": "Drawer",
-            "objectId": "Cabinet|-01.15|+00.78|-03.50",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -1.1494783163070679,
-                "y": 0.7825552225112915,
-                "z": -3.4980251789093018
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -3.5819432735443115,
-                0.09301620721817017,
-                -3.3748939037323,
-                -0.9107897281646729,
-                0.6846743822097778,
-                -3.362663507461548
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 0.8513442277908325,
+            "distance": 1.510046124458313,
+            "isactivate": false,
             "isopen": false,
             "name": "Cabinet",
             "objectId": "Cabinet|-01.01|+00.39|-03.37",
@@ -775,377 +429,12 @@
                 "y": 0.0,
                 "z": 0.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
-            "bounds3D": [
-                -0.8397345542907715,
-                0.09301596879959106,
-                -3.5855960845947266,
-                -0.3782111406326294,
-                0.6846745014190674,
-                -3.124072551727295
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.0493799448013306,
-            "isopen": false,
-            "name": "Cabinet",
-            "objectId": "Cabinet|-00.63|+00.39|-03.01",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [
-                {
-                    "objectId": "Pan|-00.68|+00.08|-03.27",
-                    "pivotId": 0
-                }
-            ],
-            "position": {
-                "x": -0.6330178380012512,
-                "y": 0.3888453245162964,
-                "z": -3.0088343620300293
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [
-                "Pan|-00.68|+00.08|-03.27"
-            ],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.5953132510185242,
-                0.09301614761352539,
-                -2.9192330837249756,
-                -0.4644504189491272,
-                0.6846743822097778,
-                -2.5138638019561768
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.1588337421417236,
-            "isopen": false,
-            "name": "Cabinet",
-            "objectId": "Cabinet|-00.63|+00.39|-02.51",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [
-                {
-                    "objectId": "Pot|-00.47|+00.08|-02.74",
-                    "pivotId": 0
-                }
-            ],
-            "position": {
-                "x": -0.6298820972442627,
-                "y": 0.3888453245162964,
-                "z": -2.5138638019561768
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [
-                "Pot|-00.47|+00.08|-02.74"
-            ],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.6035346984863281,
-                0.7248871326446533,
-                -2.9642739295959473,
-                -0.6004599332809448,
-                0.8706167936325073,
-                -2.5138635635375977
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.0702264308929443,
-            "isopen": false,
-            "name": "Drawer",
-            "objectId": "Cabinet|-00.48|+00.78|-02.74",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [
-                {
-                    "objectId": "Fork|-00.48|+00.81|-02.74",
-                    "pivotId": 0
-                }
-            ],
-            "position": {
-                "x": -0.4819878041744232,
-                "y": 0.777635395526886,
-                "z": -2.7390687465667725
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [
-                "Fork|-00.48|+00.81|-02.74"
-            ],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.6152604818344116,
-                1.5292630195617676,
-                -3.8681092262268066,
-                -0.15373694896697998,
-                2.2539286613464355,
-                -3.406585216522217
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.4991744756698608,
-            "isopen": false,
-            "name": "Cabinet",
-            "objectId": "Cabinet|-00.35|+01.89|-03.29",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.34654390811920166,
-                "y": 1.8915960788726807,
-                "z": -3.2933475971221924
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.3028959631919861,
-                1.5292634963989258,
-                -1.5821408033370972,
-                -0.17203307151794434,
-                2.2539284229278564,
-                -1.2865678071975708
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 2.2623767852783203,
-            "isopen": false,
-            "name": "Cabinet",
-            "objectId": "Cabinet|-00.34|+01.89|-01.29",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [
-                {
-                    "objectId": "Bowl|-00.16|+01.50|-01.45",
-                    "pivotId": 0
-                }
-            ],
-            "position": {
-                "x": -0.33746451139450073,
-                "y": 1.8915960788726807,
-                "z": -1.2865678071975708
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [
-                "Bowl|-00.16|+01.50|-01.45"
-            ],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.33359596133232117,
-                1.9445738792419434,
-                -2.497605323791504,
-                -0.20273306965827942,
-                2.275726795196533,
-                -2.12178373336792
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.697389841079712,
-            "isopen": false,
-            "name": "Cabinet",
-            "objectId": "Cabinet|-00.34|+02.11|-02.50",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.33746451139450073,
-                "y": 2.1101503372192383,
-                "z": -2.497605323791504
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.33359596133232117,
-                1.9445738792419434,
-                -2.0148353576660156,
-                -0.20273306965827942,
-                2.275726795196533,
-                -1.631803035736084
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 2.1214842796325684,
-            "isopen": false,
-            "name": "Cabinet",
-            "objectId": "Cabinet|-00.34|+02.11|-01.63",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.33746451139450073,
-                "y": 2.1101503372192383,
-                "z": -1.6318029165267944
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.334695965051651,
-                1.9445741176605225,
-                -1.2722522020339966,
-                -0.20383307337760925,
-                2.275726556777954,
-                -0.909758448600769
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 2.3693552017211914,
-            "isopen": false,
-            "name": "Cabinet",
-            "objectId": "Cabinet|-00.34|+02.11|-01.27",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.33746451139450073,
-                "y": 2.1101503372192383,
-                "z": -1.2722522020339966
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.334695965051651,
-                1.9445738792419434,
-                -0.7808091640472412,
-                -0.20383307337760925,
-                2.275726795196533,
-                -0.3908956050872803
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 3.0718328952789307,
-            "isopen": false,
-            "name": "Cabinet",
-            "objectId": "Cabinet|-00.34|+02.11|-00.39",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.33746451139450073,
-                "y": 2.1101503372192383,
-                "z": -0.39089563488960266
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.29263991117477417,
-                1.524427890777588,
-                -3.242128849029541,
-                -0.16177701950073242,
-                2.2490928173065186,
-                -2.9145426750183105
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.5020930767059326,
-            "isopen": false,
-            "name": "Cabinet",
-            "objectId": "Cabinet|-00.33|+01.89|-03.24",
-            "objectType": "Cabinet",
-            "openable": true,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.3272084593772888,
-                "y": 1.8867603540420532,
-                "z": -3.24212908744812
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 270.019775390625,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
+            "activatable": false,
             "bounds3D": [
                 -1.0901057720184326,
                 0.7320617437362671,
@@ -1155,7 +444,8 @@
                 -2.9198944568634033
             ],
             "cameraHorizon": 0.0,
-            "distance": 0.9817820191383362,
+            "distance": 1.545120120048523,
+            "isactivate": false,
             "isopen": false,
             "name": "Sink",
             "objectId": "Sink|-00.61|+00.94|-03.40",
@@ -1177,9 +467,12 @@
                 "y": 44.999996185302734,
                 "z": 0.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
+            "activatable": false,
             "bounds3D": [
                 -0.24254396557807922,
                 0.2711706757545471,
@@ -1189,7 +482,8 @@
                 -0.8001892566680908
             ],
             "cameraHorizon": 0.0,
-            "distance": 2.6209001541137695,
+            "distance": 1.716532826423645,
+            "isactivate": false,
             "isopen": false,
             "name": "Egg",
             "objectId": "Egg|-00.21|+00.27|-00.83",
@@ -1211,9 +505,12 @@
                 "y": 270.0,
                 "z": 0.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
+            "activatable": false,
             "bounds3D": [
                 -1.5313434600830078,
                 0.9396243691444397,
@@ -1223,7 +520,8 @@
                 -3.452800989151001
             ],
             "cameraHorizon": 0.0,
-            "distance": 0.49850353598594666,
+            "distance": 1.5153422355651855,
+            "isactivate": false,
             "isopen": false,
             "name": "Apple",
             "objectId": "Apple|-01.49|+00.93|-03.50",
@@ -1245,9 +543,12 @@
                 "y": 0.0,
                 "z": 0.0
             },
-            "visible": true
+            "temperature": 77.0,
+            "timeleft": 0.0,
+            "visible": false
         },
         {
+            "activatable": false,
             "bounds3D": [
                 -0.42987868189811707,
                 0.7445617914199829,
@@ -1257,7 +558,8 @@
                 -0.614234447479248
             ],
             "cameraHorizon": 0.0,
-            "distance": 2.6522958278656006,
+            "distance": 1.6854544878005981,
+            "isactivate": false,
             "isopen": false,
             "name": "Lettuce1",
             "objectId": "Lettuce|-00.33|+00.74|-00.69",
@@ -1279,43 +581,12 @@
                 "y": 270.0,
                 "z": 0.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
-            "bounds3D": [
-                -0.6563448309898376,
-                0.8579825162887573,
-                -1.8734675645828247,
-                -0.576196014881134,
-                0.9381582736968994,
-                -1.7933334112167358
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.4648852348327637,
-            "isopen": false,
-            "name": "StoveKnob2_Range1",
-            "objectId": "StoveKnob|-00.62|+00.90|-01.83",
-            "objectType": "StoveKnob",
-            "openable": false,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.6176999807357788,
-                "y": 0.8995000123977661,
-                "z": -1.833400011062622
-            },
-            "receptacle": false,
-            "receptacleCount": 0,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 315.0,
-                "y": 89.97400665283203,
-                "z": 180.03199768066406
-            },
-            "visible": false
-        },
-        {
+            "activatable": false,
             "bounds3D": [
                 -0.6007806062698364,
                 0.9309259057044983,
@@ -1325,7 +596,8 @@
                 -1.5355703830718994
             ],
             "cameraHorizon": 0.0,
-            "distance": 1.7192022800445557,
+            "distance": 0.8331364989280701,
+            "isactivate": false,
             "isopen": false,
             "name": "CoffeeCup1",
             "objectId": "Mug|-00.53|+00.93|-01.58",
@@ -1347,9 +619,12 @@
                 "y": 0.0,
                 "z": 0.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
+            "activatable": false,
             "bounds3D": [
                 -0.3178284764289856,
                 0.9333651065826416,
@@ -1359,7 +634,8 @@
                 -2.1666717529296875
             ],
             "cameraHorizon": 0.0,
-            "distance": 1.4745937585830688,
+            "distance": 1.0562087297439575,
+            "isactivate": false,
             "isopen": false,
             "name": "GasStoveTop_Range3",
             "objectId": "StoveBurner|-00.23|+00.93|-02.26",
@@ -1381,9 +657,12 @@
                 "y": 0.0,
                 "z": 0.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
+            "activatable": false,
             "bounds3D": [
                 -0.5608127117156982,
                 0.9253336787223816,
@@ -1393,7 +672,8 @@
                 -2.578345537185669
             ],
             "cameraHorizon": 0.0,
-            "distance": 1.1463916301727295,
+            "distance": 1.0172699689865112,
+            "isactivate": false,
             "isopen": false,
             "name": "butterKnife",
             "objectId": "ButterKnife|-00.43|+00.93|-02.60",
@@ -1415,19 +695,23 @@
                 "y": 0.0,
                 "z": 0.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
+            "activatable": false,
             "bounds3D": [
-                -1.4711631536483765,
-                0.9296106696128845,
-                -3.788638114929199,
-                -1.1927717924118042,
-                1.0843539237976074,
-                -3.621340751647949
+                -1.510094165802002,
+                0.9262787699699402,
+                -3.7973759174346924,
+                -1.1534547805786133,
+                1.101767897605896,
+                -3.613739252090454
             ],
             "cameraHorizon": 0.0,
-            "distance": 0.7264378070831299,
+            "distance": 1.7076919078826904,
+            "isactivate": false,
             "isopen": false,
             "name": "Bread",
             "objectId": "Bread|-01.33|+00.93|-03.71",
@@ -1449,43 +733,12 @@
                 "y": 6.309757232666016,
                 "z": 0.0
             },
-            "visible": true
-        },
-        {
-            "bounds3D": [
-                -0.6563448309898376,
-                0.8581824898719788,
-                -2.1692676544189453,
-                -0.576196014881134,
-                0.9383582472801208,
-                -2.0891332626342773
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.2422535419464111,
-            "isopen": false,
-            "name": "StoveKnob2_Range3",
-            "objectId": "StoveKnob|-00.62|+00.90|-02.13",
-            "objectType": "StoveKnob",
-            "openable": false,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.6176999807357788,
-                "y": 0.8996999859809875,
-                "z": -2.129199981689453
-            },
-            "receptacle": false,
-            "receptacleCount": 0,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 315.0,
-                "y": 89.97400665283203,
-                "z": 180.03199768066406
-            },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
+            "activatable": false,
             "bounds3D": [
                 -1.6801782846450806,
                 0.9300780892372131,
@@ -1495,7 +748,8 @@
                 -3.4346466064453125
             ],
             "cameraHorizon": 0.0,
-            "distance": 0.49601495265960693,
+            "distance": 1.5249991416931152,
+            "isactivate": false,
             "isopen": false,
             "name": "Potato",
             "objectId": "Potato|-01.63|+00.93|-03.48",
@@ -1517,43 +771,12 @@
                 "y": 0.0,
                 "z": 0.0
             },
-            "visible": true
-        },
-        {
-            "bounds3D": [
-                -0.3178284764289856,
-                0.9333651065826416,
-                -1.9365284442901611,
-                -0.1359715461730957,
-                0.9572690725326538,
-                -1.754671573638916
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.7192755937576294,
-            "isopen": false,
-            "name": "GasStoveTop_Range2",
-            "objectId": "StoveBurner|-00.23|+00.93|-01.85",
-            "objectType": "StoveBurner",
-            "openable": false,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.22689999639987946,
-                "y": 0.9301429986953735,
-                "z": -1.8456000089645386
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
+            "activatable": false,
             "bounds3D": [
                 -2.784135103225708,
                 0.9281330108642578,
@@ -1563,7 +786,8 @@
                 -3.4185357093811035
             ],
             "cameraHorizon": 0.0,
-            "distance": 1.2862499952316284,
+            "distance": 2.107116222381592,
+            "isactivate": false,
             "isopen": false,
             "name": "CoffeeMachine2",
             "objectId": "CoffeeMachine|-02.65|+00.93|-03.57",
@@ -1585,145 +809,12 @@
                 "y": 0.0,
                 "z": 0.0
             },
+            "temperature": 77.0,
+            "timeleft": 0.0,
             "visible": false
         },
         {
-            "bounds3D": [
-                -0.6211026906967163,
-                0.7797816395759583,
-                -1.4715903997421265,
-                -0.41446253657341003,
-                0.7992590069770813,
-                -1.4300788640975952
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.8543479442596436,
-            "isopen": false,
-            "name": "Spoon",
-            "objectId": "Spoon|-00.50|+00.78|-01.45",
-            "objectType": "Spoon",
-            "openable": false,
-            "parentReceptacle": "Cabinet|-00.50|+00.78|-01.45",
-            "pickupable": true,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.4998437762260437,
-                "y": 0.784561276435852,
-                "z": -1.450774908065796
-            },
-            "receptacle": false,
-            "receptacleCount": 0,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": -1.0245284101983998e-05,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.5118284225463867,
-                0.9333651065826416,
-                -2.3485283851623535,
-                -0.3299715518951416,
-                0.9572690725326538,
-                -2.1666717529296875
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.3107631206512451,
-            "isopen": false,
-            "name": "GasStoveTop_Range4",
-            "objectId": "StoveBurner|-00.42|+00.93|-02.26",
-            "objectType": "StoveBurner",
-            "openable": false,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.42089998722076416,
-                "y": 0.9301429986953735,
-                "z": -2.2576000690460205
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -0.5738816261291504,
-                0.0948454737663269,
-                -2.837768316268921,
-                -0.37388163805007935,
-                0.2948455214500427,
-                -2.637768030166626
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.3866983652114868,
-            "isopen": false,
-            "name": "Pot1",
-            "objectId": "Pot|-00.47|+00.08|-02.74",
-            "objectType": "Pot",
-            "openable": false,
-            "parentReceptacle": "Cabinet|-00.63|+00.39|-02.51",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -0.4738820791244507,
-                "y": 0.08484548330307007,
-                "z": -2.737863779067993
-            },
-            "receptacle": true,
-            "receptacleCount": 1,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": -1.0245284101983998e-05,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
-            "bounds3D": [
-                -2.613636016845703,
-                0.0006269514560699463,
-                -3.853076219558716,
-                -2.085458755493164,
-                0.874946117401123,
-                -3.286182165145874
-            ],
-            "cameraHorizon": 0.0,
-            "distance": 1.4325217008590698,
-            "isopen": false,
-            "name": "Chair5",
-            "objectId": "Chair|-02.35|00.00|-03.60",
-            "objectType": "Chair",
-            "openable": false,
-            "parentReceptacle": "",
-            "pickupable": false,
-            "pivotSimObjs": [],
-            "position": {
-                "x": -2.3540000915527344,
-                "y": -5.653919288306497e-07,
-                "z": -3.6019999980926514
-            },
-            "receptacle": false,
-            "receptacleCount": 0,
-            "receptacleObjectIds": [],
-            "rotation": {
-                "x": 0.0,
-                "y": 74.23304748535156,
-                "z": 0.0
-            },
-            "visible": false
-        },
-        {
+            "activatable": true,
             "bounds3D": [
                 -0.3505246043205261,
                 1.5073667764663696,
@@ -1733,7 +824,8 @@
                 -1.720513105392456
             ],
             "cameraHorizon": 0.0,
-            "distance": 1.7039387226104736,
+            "distance": 1.1896246671676636,
+            "isactivate": false,
             "isopen": false,
             "name": "Microwave4",
             "objectId": "Microwave|-00.17|+01.49|-02.06",
@@ -1755,10 +847,12 @@
                 "y": 0.0,
                 "z": 0.0
             },
-            "visible": false
+            "temperature": 77.0,
+            "timeleft": 10.0,
+            "visible": true
         }
     ],
-    "sceneName": "FloorPlan28",
-    "screenHeight": 300,
-    "screenWidth": 300
+    "sceneName": "simple_kitchen",
+    "screenHeight": 600,
+    "screenWidth": 800
 }

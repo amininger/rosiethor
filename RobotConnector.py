@@ -167,6 +167,8 @@ class RobotConnector(AgentConnector):
                 command = self.process_open_command(root_id)
             elif action_name == "close":
                 command = self.process_close_command(root_id)
+            elif action_name == "set-timer":
+                command = self.process_set_timer_command(root_id)
             else:
                 raise CommandSyntaxError("Unrecognized Action " + action_name)
 
@@ -177,6 +179,7 @@ class RobotConnector(AgentConnector):
             root_id.CreateStringWME("error-info", str(e))
         except Exception as e:
             self.print_handler(traceback.format_exc())
+            self.print_handler(sys.exc_info())
             root_id.CreateStringWME("status", "error")
             root_id.CreateStringWME("error-info", "runtime error")
 
@@ -259,6 +262,24 @@ class RobotConnector(AgentConnector):
 
         return { "action": "CloseObject", 
                 "objectId": world_obj.get_perception_id() }
+
+    def process_set_timer_command(self, root_id):
+        obj_handle = root_id.GetChildString("object")
+        if obj_handle == None:
+            raise CommandSyntaxError("set-timer is missing ^object")
+
+        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
+        if world_obj == None:
+            raise CommandSyntaxError("set-timer given unrecognized object " + obj_handle)
+
+        time = root_id.GetChildInt("time")
+        if time == None:
+            raise CommandSyntaxError("set-timer not given a time")
+
+        return { "action": "SetTime", 
+                "objectId": world_obj.get_perception_id(),
+                "timeset": float(time) }
+
 
     # Creates a triangular view region of height VIEW_DIST
     # and angle VIEW_ANGLE and a height of 2m

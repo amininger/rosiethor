@@ -17,11 +17,13 @@ class Ai2ThorSimulator:
         self.sim.start()
         self.sim.reset('testing')
 
-        self.world = self.sim.step(dict(action='Initialize', gridSize=0.25)).metadata
-        self.world = self.sim.step(dict(action='Teleport', x=-1.5, y=0.98, z=-3.0)).metadata
+        self.world = self.sim.step(dict(action='Initialize', gridSize=0.25, screenWidth=800, screenHeight=600)).metadata
+        self.world = self.sim.step(dict(action='Teleport', x=-1.25, y=0.98, z=-2.0)).metadata
         self.world = self.sim.step(dict(action='RotateRight')).metadata
-        self.world = self.sim.step(dict(action='RotateRight')).metadata
-        self.world = self.sim.step(dict(action='LookDown')).metadata
+        #self.world = self.sim.step(dict(action='RotateRight')).metadata
+        #self.world = self.sim.step(dict(action='LookDown')).metadata
+
+        self.save()
 
 
     def save(self):

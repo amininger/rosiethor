@@ -12,7 +12,7 @@ from .RobotConnector import RobotConnector
 
 class RosieThorAgent(SoarAgent):
     def __init__(self, sim, config_filename=None, **kwargs):
-        SoarAgent.__init__(self, config_filename=config_filename, **kwargs)
+        SoarAgent.__init__(self, config_filename=config_filename, verbose=False, **kwargs)
 
         self.connectors["language"] = LanguageConnector(self)
         self.connectors["robot"] = RobotConnector(self, sim)

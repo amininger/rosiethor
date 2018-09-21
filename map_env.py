@@ -10,7 +10,7 @@ def get_info(sim):
     print( agent["position"]["x"], agent["position"]["z"], agent["rotation"]["y"])
 
 class GridMapper:
-    def __init__(self, map_name="FloorPlan28", grid_size=0.25):
+    def __init__(self, map_name="simple_kitchen", grid_size=0.25):
         self.grid_size = grid_size
 
         self.sim = Ai2ThorSimulator()
@@ -33,9 +33,9 @@ class GridMapper:
         with open(map_name + ".map", 'w') as f:
             f.write("Name: " + map_name + "\n")
             f.write("Grid Size: " + str(grid_size) + "\n")
+            f.write("Grid Dims: " + str(max_row-min_row+2) + " " + str(max_col-min_col+2) + "\n")
             f.write("Min Row/Col: " + str(min_row-1) + " " + str(min_col-1) + "\n")
-            f.write("Max Row/Col: " + str(max_row-min_row+2) + " " + str(max_col-min_col+2) + "\n")
-            for row in grid:
+            for row in reversed(grid):
                 f.write("".join(row) + "\n")
 
 

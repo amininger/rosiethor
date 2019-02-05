@@ -53,6 +53,11 @@ class Ai2ThorSimulator:
                 listener(self.world)
             #self.lock.release()
 
+    def approach_obj(self, obj_id):
+        if not self.sim:
+            return
+        print(self.world["objects"])
+
 #
 #            rot = agent["rotation"]
 #            rot = ( rot["x"] * DEG_TO_RAD, rot["y"] * DEG_TO_RAD, rot["z"] * DEG_TO_RAD )

@@ -36,9 +36,14 @@ class ControllerGUI(Toplevel):
         look_down["command"] = lambda : self.sim_robot.exec_simple_command("LookDown")
         self.buttons.append(look_down)
 
-        open_door = Button(self, text="Open")
-        open_door["command"] = lambda : self.open_command()
-        self.buttons.append(open_door)
+        #open_door = Button(self, text="Open")
+        #open_door["command"] = lambda : self.open_command()
+        #self.buttons.append(open_door)
+
+        print("HI!!!")
+        approach = Button(self, text="Approach")
+        approach["command"] = lambda : self.approach_command()
+        self.buttons.append(approach)
 
         close_door = Button(self, text="Close")
         close_door["command"] = lambda : self.close_command()
@@ -90,6 +95,14 @@ class ControllerGUI(Toplevel):
         elif cmd_name == "PUT":
             held_id = str(self.sim_robot.world["inventoryObjects"][0]["objectId"])
             self.sim_robot.exec_command(dict(action="PutObject", objectId=held_id, receptacleObjectId=obj_id))
+        elif cmd_name == "APPROACH":
+            self.sim_robot.approach_obj(obj_id)
+
+
+    def approach_command(self):
+        obj_ids = [ str(obj["objectId"]) for obj in self.sim_robot.world["objects"] ]
+        self.show_menu("APPROACH", obj_ids)
+
 
     def open_command(self):
         obj_ids = [ str(obj["objectId"]) for obj in self.sim_robot.world["objects"] 

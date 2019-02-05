@@ -169,6 +169,9 @@ class RobotConnector(AgentConnector):
                 command = self.process_close_command(root_id)
             elif action_name == "set-timer":
                 command = self.process_set_timer_command(root_id)
+            elif action_name == "approach":
+                self.perform_approach_command(root_id)
+                return
             else:
                 raise CommandSyntaxError("Unrecognized Action " + action_name)
 
@@ -279,6 +282,19 @@ class RobotConnector(AgentConnector):
         return { "action": "SetTime", 
                 "objectId": world_obj.get_perception_id(),
                 "timeset": float(time) }
+
+    def perform_approach_command(self, root_id):
+        obj_handle = root_id.GetChildString("object")
+        if obj_handle == None:
+            raise CommandSyntaxError("approach is missing ^object")
+
+        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
+        if world_obj == None:
+            raise CommandSyntaxError("approach given unrecognized object " + obj_handle)
+
+        self.sim.exec_command({ "action": "RotateRight" })
+        #world_obj.get_perception_id()
+        root_id.CreateStringWME("status", "success")
 
 
     # Creates a triangular view region of height VIEW_DIST

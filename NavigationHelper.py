@@ -26,7 +26,7 @@ class Node:
         return False
 
 class NavigationHelper:
-    def __init__(self, map_name="test_map"):
+    def __init__(self, map_name="testing"):
         with open(map_name + ".map", 'r') as f:
             name = get_next_param(f)
             self.grid_size = float(get_next_param(f))
@@ -87,8 +87,8 @@ class NavigationHelper:
                     next_node.parent = node
                     heapq.heappush(self.opened, (next_node.f, next_node.h, next_node))
         return None
-            
 
+    # Given a desired coord, find an open square that is as close as possible
     def calc_goals(self, coord):
         goals = set()
         # Same square

@@ -25,6 +25,9 @@ class Ai2ThorSimulator:
 
         self.save()
 
+    def set_scene(self, scene_name):
+        self.sim.reset(scene_name)
+        self.world = self.sim.step(dict(action='Initialize', gridSize=0.25, screenWidth=800, screenHeight=600)).metadata
 
     def save(self):
         world_info = json.dumps(self.world)

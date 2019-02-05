@@ -41,6 +41,7 @@ class RosieGUI(Frame):
         self.agent = RosieThorAgent(self.sim, config_filename=config_file)
         self.agent.connectors["language"].register_message_callback(self.receive_message)
         self.agent.connect()
+        self.sim.set_scene(self.agent.scene)
 
     def create_script_buttons(self):
         self.script = []

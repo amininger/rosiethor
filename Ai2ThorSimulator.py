@@ -4,12 +4,18 @@ import json
 from threading import Lock
 import traceback
 
+from .NavigationHelper import NavigationHelper
+from .MapUtil import MapUtil
+
+import time
+
 class Ai2ThorSimulator:
     def __init__(self):
         self.sim = None
         self.world = None
         self.lock = Lock()
         self.listeners = set()
+        self.nav = NavigationHelper("testing")
 
     def start(self):
         self.sim = ai2thor.controller.Controller()
@@ -24,6 +30,7 @@ class Ai2ThorSimulator:
         #self.world = self.sim.step(dict(action='LookDown')).metadata
 
         self.save()
+
 
     def set_scene(self, scene_name):
         self.sim.reset(scene_name)
@@ -43,7 +50,7 @@ class Ai2ThorSimulator:
         self.listeners.add(listener)
 
     def exec_simple_command(self, cmd):
-        return self.exec_command(dict(action=cmd))
+        self.exec_command(dict(action=cmd))
 
     def exec_command(self, cmd):
         if self.sim:
@@ -55,8 +62,30 @@ class Ai2ThorSimulator:
 
     def approach_obj(self, obj_id):
         if not self.sim:
-            return
-        print(self.world["objects"])
+            return False
+
+        print("Approach: " + obj_id)
+        obj = next( (o for o in self.world["objects"] if o["objectId"] == obj_id), None)
+        if not obj:
+            print("ERROR: Ai2ThorSimulator::approach_obj - " + obj_id + " doesn't exist")
+            return False
+
+        robot_xyzrpy = MapUtil.get_obj_xyzrpy(self.world["agent"])
+        path = self.nav.find_path_to_obj(robot_xyzrpy, obj)
+
+        if not path:
+            return False
+
+        for step in path:
+            time.sleep(0.2)
+            if step == 'F':
+                self.exec_simple_command("MoveAhead")
+            elif step == 'R':
+                self.exec_simple_command("RotateRight")
+            elif step == 'L':
+                self.exec_simple_command("RotateLeft")
+        return True
+
 
 #
 #            rot = agent["rotation"]

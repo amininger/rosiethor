@@ -292,9 +292,11 @@ class RobotConnector(AgentConnector):
         if world_obj == None:
             raise CommandSyntaxError("approach given unrecognized object " + obj_handle)
 
-        self.sim.exec_command({ "action": "RotateRight" })
-        #world_obj.get_perception_id()
-        root_id.CreateStringWME("status", "success")
+        if self.sim.approach_obj(world_obj.get_perception_id()):
+            root_id.CreateStringWME("status", "success")
+        else:
+            root_id.CreateStringWME("status", "error")
+            root_id.CreateStringWME("error-info", "Execution error while doing approach(" + obj_handle + ")")
 
 
     # Creates a triangular view region of height VIEW_DIST

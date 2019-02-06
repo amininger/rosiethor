@@ -40,7 +40,6 @@ class ControllerGUI(Toplevel):
         #open_door["command"] = lambda : self.open_command()
         #self.buttons.append(open_door)
 
-        print("HI!!!")
         approach = Button(self, text="Approach")
         approach["command"] = lambda : self.approach_command()
         self.buttons.append(approach)

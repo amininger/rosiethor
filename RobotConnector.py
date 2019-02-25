@@ -7,6 +7,8 @@ VIEW_DIST = 3.8
 VIEW_ANGLE = 1.5708 * 0.8
 VIEW_HEIGHT = 2.0
 
+from threading import Lock
+
 class RobotDataUnwrapper:
     def __init__(self, world_data):
         self.world = world_data
@@ -31,6 +33,7 @@ class CommandSyntaxError(Exception):
 class RobotConnector(AgentConnector):
     def __init__(self, agent, sim):
         AgentConnector.__init__(self, agent)
+        self.lock = Lock()
 
         self.sim = sim
         self.sim.add_world_change_listener(lambda world: self.handle_world_change(world))
@@ -55,6 +58,7 @@ class RobotConnector(AgentConnector):
         self.added = False
 
     def handle_world_change(self, world):
+        self.lock.acquire()
         unwrapper = RobotDataUnwrapper(world)
         pos = unwrapper.pos()
         yaw = unwrapper.yaw()
@@ -67,6 +71,7 @@ class RobotConnector(AgentConnector):
         self.held_object.set_value(held_obj_h)
 
         self.wm_dirty = True
+        self.lock.release()
 
     def on_init_soar(self):
         svs_commands = []
@@ -76,10 +81,14 @@ class RobotConnector(AgentConnector):
     def on_input_phase(self, input_link):
         svs_commands = []
         if not self.added:
+            self.lock.acquire()
             self.add_to_wm(input_link, svs_commands)
+            self.lock.release()
         elif self.wm_dirty:
+            self.lock.acquire()
             self.update_wm(svs_commands)
             self.wm_dirty = False
+            self.lock.release()
         if len(svs_commands) > 0:
             self.agent.agent.SendSVSInput("\n".join(svs_commands))
 
@@ -214,85 +223,80 @@ class RobotConnector(AgentConnector):
         if obj_handle == None:
             raise CommandSyntaxError("pick-up is missing ^object")
 
-        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
-        if world_obj == None:
+        perc_id = self.agent.connectors["perception"].objects.get_perception_id(obj_handle)
+        if perc_id == None:
             raise CommandSyntaxError("pick-up given unrecognized object " + obj_handle)
 
-        return { "action": "PickupObject", 
-                "objectId": world_obj.get_perception_id() }
+        return { "action": "PickupObject", "objectId": perc_id }
 
     def process_putdown_command(self, root_id):
         obj_handle = root_id.GetChildString("object")
         if obj_handle == None:
             raise CommandSyntaxError("put-down is missing ^object")
 
-        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
-        if world_obj == None:
+        perc_id = self.agent.connectors["perception"].objects.get_perception_id(obj_handle)
+        if perc_id == None:
             raise CommandSyntaxError("put-down given unrecognized object " + obj_handle)
 
         rec_handle = root_id.GetChildString("receptacle")
         if rec_handle == None:
             raise CommandSyntaxError("put-down is missing ^receptacle")
 
-        world_rec = self.agent.connectors["perception"].objects.get_object(rec_handle)
+        rec_id = self.agent.connectors["perception"].objects.get_perception_id(rec_handle)
         if world_rec == None:
             raise CommandSyntaxError("put-down given unrecognized receptacle " + rec_handle)
 
         return { "action": "PutObject", 
-                "objectId": world_obj.get_perception_id(), 
-                "receptacleObjectId": world_rec.get_perception_id() }
+                "objectId": perc_id, 
+                "receptacleObjectId": rec_id }
 
     def process_open_command(self, root_id):
         obj_handle = root_id.GetChildString("object")
         if obj_handle == None:
             raise CommandSyntaxError("open is missing ^object")
 
-        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
-        if world_obj == None:
+        perc_id = self.agent.connectors["perception"].objects.get_perception_id(obj_handle)
+        if perc_id == None:
             raise CommandSyntaxError("open given unrecognized object " + obj_handle)
 
-        return { "action": "OpenObject", 
-                "objectId": world_obj.get_perception_id() }
+        return { "action": "OpenObject", "objectId": perc_id }
 
     def process_close_command(self, root_id):
         obj_handle = root_id.GetChildString("object")
         if obj_handle == None:
             raise CommandSyntaxError("close is missing ^object")
 
-        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
-        if world_obj == None:
+        perc_id = self.agent.connectors["perception"].objects.get_perception_id(obj_handle)
+        if perc_id == None:
             raise CommandSyntaxError("close given unrecognized object " + obj_handle)
 
-        return { "action": "CloseObject", 
-                "objectId": world_obj.get_perception_id() }
+        return { "action": "CloseObject", "objectId": perc_id }
 
     def process_set_timer_command(self, root_id):
         obj_handle = root_id.GetChildString("object")
         if obj_handle == None:
             raise CommandSyntaxError("set-timer is missing ^object")
 
-        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
-        if world_obj == None:
+        perc_id = self.agent.connectors["perception"].objects.get_perception_id(obj_handle)
+        if perc_id == None:
             raise CommandSyntaxError("set-timer given unrecognized object " + obj_handle)
 
         time = root_id.GetChildInt("time")
         if time == None:
             raise CommandSyntaxError("set-timer not given a time")
 
-        return { "action": "SetTime", 
-                "objectId": world_obj.get_perception_id(),
-                "timeset": float(time) }
+        return { "action": "SetTime", "objectId": perc_id, "timeset": float(time) }
 
     def perform_approach_command(self, root_id):
         obj_handle = root_id.GetChildString("object")
         if obj_handle == None:
             raise CommandSyntaxError("approach is missing ^object")
 
-        world_obj = self.agent.connectors["perception"].objects.get_object(obj_handle)
-        if world_obj == None:
+        perc_id = self.agent.connectors["perception"].objects.get_perception_id(obj_handle)
+        if perc_id == None:
             raise CommandSyntaxError("approach given unrecognized object " + obj_handle)
 
-        if self.sim.approach_obj(world_obj.get_perception_id()):
+        if self.sim.approach_obj(perc_id):
             root_id.CreateStringWME("status", "success")
         else:
             root_id.CreateStringWME("status", "error")

@@ -42,12 +42,14 @@ class ObjectDataUnwrapper:
 
     def temperature(self):
         if float(self.data["temperature"]) > 100:
-            return "hot"
-        elif float(self.data["temperature"]) > 60:
-            return "warm"
+            return "hot1"
+        elif float(self.data["temperature"]) > 70:
+            return "warm1"
+        elif float(self.data["temperature"]) > 50:
+            return "room-temp1"
         elif float(self.data["temperature"]) > 30:
-            return "cool"
-        return "cold"
+            return "cool1"
+        return "cold1"
 
     def open_state(self):
         if not self.data["openable"]:
@@ -57,7 +59,7 @@ class ObjectDataUnwrapper:
     def activated_state(self):
         if not self.data["activatable"]:
             return None
-        return "activated" if self.data["isactivate"] else "not-activated"
+        return "on2" if self.data["isactivate"] else "off2"
 
     def timeleft(self):
         return str(self.data["timeleft"])
@@ -144,7 +146,7 @@ class WorldObject(object):
             self.properties["door2"].set_value(unwrapper.open_state())
 
         if "activation" in self.properties:
-            self.properties["activation"].set_value(unwrapper.activated_state())
+            self.properties["activation1"].set_value(unwrapper.activated_state())
 
 
     def set_contained_objects(self, obj_handles):
@@ -187,7 +189,7 @@ class WorldObject(object):
             self.properties["door2"] = ObjectProperty("door2", "closed2")
 
         if unwrapper.activated_state() != None:
-            self.properties["activation"] = ObjectProperty("activation", "not-activated")
+            self.properties["activation1"] = ObjectProperty("activation1", "off2")
 
     ### Methods for managing working memory structures ###
 

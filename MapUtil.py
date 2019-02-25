@@ -1,6 +1,9 @@
 from math import *
 
 class MapUtil:
+    def convert_pos(pos):
+        return [ pos["x"], pos["z"], pos["y"] ]
+
     def get_obj_xyzrpy(obj):
         pos = obj["position"]
         yaw = ((450 - int(obj["rotation"]["y"])) % 360) * pi / 180.0

@@ -1,13 +1,17 @@
 import ai2thor.controller
 import json
 
-from threading import Lock
+from threading import Lock, Thread
 import traceback
 
-from .NavigationHelper import NavigationHelper
-from .MapUtil import MapUtil
+from rosiethor.NavigationHelper import NavigationHelper
+from rosiethor.MapUtil import MapUtil
+
+from math import *
 
 import time
+
+INTERMEDIATE_ACTION_DELAY = 0.2
 
 class Ai2ThorSimulator:
     def __init__(self):
@@ -15,26 +19,37 @@ class Ai2ThorSimulator:
         self.world = None
         self.lock = Lock()
         self.listeners = set()
-        self.nav = NavigationHelper("testing")
 
-    def start(self):
+    def start(self, scene_name="testing"):
+        self.scene_name = scene_name
+
         self.sim = ai2thor.controller.Controller()
         self.sim.local_executable_path = "/home/aaron/sf/research/rosie-project/ai2thor/unity/ai2thor.x86_64"
         self.sim.start()
-        self.sim.reset('testing')
+        self.sim.reset(self.scene_name)
 
-        self.world = self.sim.step(dict(action='Initialize', gridSize=0.25, screenWidth=800, screenHeight=600)).metadata
-        self.world = self.sim.step(dict(action='Teleport', x=-1.25, y=0.98, z=-2.0)).metadata
-        self.world = self.sim.step(dict(action='RotateRight')).metadata
+        self.nav = NavigationHelper(self.scene_name)
+
+        self.poll_thread = Thread(target = Ai2ThorSimulator.__poll_thread, args = (self, ) )
+        self.poll_thread.start()
+
+        #self.world = self.sim.step(dict(action='Initialize', gridSize=0.25, screenWidth=800, screenHeight=600)).metadata
+        #self.world = self.sim.step(dict(action='Teleport', x=-1.25, y=0.98, z=-2.0)).metadata
+        #self.world = self.sim.step(dict(action='RotateRight')).metadata
         #self.world = self.sim.step(dict(action='RotateRight')).metadata
         #self.world = self.sim.step(dict(action='LookDown')).metadata
 
-        self.save()
-
+    # Will get an updated world state every 500 ms
+    def __poll_thread(self):
+        while True:
+            self.exec_simple_command("Poll")
+            time.sleep(0.5)
 
     def set_scene(self, scene_name):
+        self.lock.acquire()
         self.sim.reset(scene_name)
         self.world = self.sim.step(dict(action='Initialize', gridSize=0.25, screenWidth=800, screenHeight=600)).metadata
+        self.lock.release()
 
     def save(self):
         world_info = json.dumps(self.world)
@@ -54,16 +69,73 @@ class Ai2ThorSimulator:
 
     def exec_command(self, cmd):
         if self.sim:
-            #self.lock.acquire()
+            self.lock.acquire()
             self.world = self.sim.step(cmd).metadata
             for listener in self.listeners:
                 listener(self.world)
-            #self.lock.release()
+            self.lock.release()
 
-    def approach_obj(self, obj_id):
-        if not self.sim:
+    def get_norm_dir_to_obj(self, obj):
+        camPos = MapUtil.convert_pos(self.world["cameraPosition"])
+        obj_xyzrpy = MapUtil.get_obj_xyzrpy(obj)
+        dPos = [ obj_xyzrpy[d] - camPos[d] for d in range(3) ]
+        dPosMag = sqrt(sum([ dPos[d] * dPos[d] for d in range(3) ]))
+        return [ dPos[d] / dPosMag for d in range(3) ]
+
+
+    def lookat_obj(self, obj_id):
+        obj = next( (o for o in self.world["objects"] if o["objectId"] == obj_id), None)
+        if not obj:
+            print("ERROR: Ai2ThorSimulator::lookat_obj - " + obj_id + " doesn't exist")
             return False
 
+        # Step 1: Rotate to face object
+        while True:
+            dPosNorm = self.get_norm_dir_to_obj(obj)
+            rel_yaw = atan2(dPosNorm[1], dPosNorm[0]) - MapUtil.get_obj_yaw(self.world["agent"])
+            if rel_yaw < 0:
+                rel_yaw += 2 * pi
+
+            time.sleep(INTERMEDIATE_ACTION_DELAY)
+            
+            if rel_yaw > pi * 0.25 and rel_yaw <= pi * 1.25:
+                self.exec_simple_command("RotateLeft")
+            elif rel_yaw > pi * 1.25 and rel_yaw < pi * 1.75:
+                self.exec_simple_command("RotateRight")
+            else:
+                break
+
+        # Step 2: Look up/down
+        viewHorizon = round(self.world["agent"]["cameraHorizon"])
+        while True:
+            # Normalized direction vector to the object
+            dPosNorm = self.get_norm_dir_to_obj(obj)
+
+            # angle of camera rotation above/below straight forward
+            viewAngle = self.world["agent"]["cameraHorizon"]
+            viewAngle = (-viewAngle / 180 * pi)
+
+            # The up vector for the robot (relative to viewing direction)
+            robotYaw = MapUtil.get_obj_yaw(self.world["agent"])
+            up = [ cos(robotYaw) * -sin(viewAngle), sin(robotYaw) * -sin(viewAngle), cos(viewAngle) ]
+
+            dot = sum([ up[d] * dPosNorm[d] for d in range(3) ])
+
+            time.sleep(INTERMEDIATE_ACTION_DELAY)
+            if dot > sin(pi/10):
+                self.exec_simple_command("LookUp")
+            elif dot < sin(-pi/10):
+                self.exec_simple_command("LookDown")
+
+            newViewHorizon = round(self.world["agent"]["cameraHorizon"])
+            if newViewHorizon == viewHorizon:
+                break
+            viewHorizon = newViewHorizon
+
+        return True
+
+
+    def approach_obj(self, obj_id):
         print("Approach: " + obj_id)
         obj = next( (o for o in self.world["objects"] if o["objectId"] == obj_id), None)
         if not obj:
@@ -77,14 +149,15 @@ class Ai2ThorSimulator:
             return False
 
         for step in path:
-            time.sleep(0.2)
+            time.sleep(INTERMEDIATE_ACTION_DELAY)
             if step == 'F':
                 self.exec_simple_command("MoveAhead")
             elif step == 'R':
                 self.exec_simple_command("RotateRight")
             elif step == 'L':
                 self.exec_simple_command("RotateLeft")
-        return True
+
+        return self.lookat_obj(obj_id)
 
 
 #

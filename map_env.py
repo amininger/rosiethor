@@ -6,11 +6,11 @@ from tkinter import *
 from rosiethor import *
 
 class GridMapper:
-    def __init__(self, map_name="simple_kitchen", grid_size=0.25):
+    def __init__(self, map_name="testing", grid_size=0.25):
         self.grid_size = grid_size
 
         self.sim = Ai2ThorSimulator()
-        self.sim.start()
+        self.sim.start(map_name)
 
         # Make sure facing 0 direction (+x axis)
         while MapUtil.get_obj_dir(self.sim.world["agent"]) != 0:
@@ -68,5 +68,5 @@ class GridMapper:
                 self.explore_coord(new_coord, depth + "  ")
                 self.sim.exec_simple_command("MoveLeft")
 
-mapper = GridMapper(map_name="testing")
+mapper = GridMapper(map_name="ONR_demo")
 

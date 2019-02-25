@@ -30,19 +30,24 @@ class Node:
 
 class NavigationHelper:
     def __init__(self, map_name="testing"):
-        with open("/home/aaron/sf/research/rosie-project/rosiethor/" + map_name + ".map", 'r') as f:
-            name = get_next_param(f)
-            self.grid_size = float(get_next_param(f))
+        try:
+            with open("/home/aaron/sf/research/rosie-project/rosiethor/" + map_name + ".map", 'r') as f:
+                name = get_next_param(f)
+                self.grid_size = float(get_next_param(f))
 
-            dims = get_next_param(f).split(" ")
-            self.rows = int(dims[0])
-            self.cols = int(dims[1])
+                dims = get_next_param(f).split(" ")
+                self.rows = int(dims[0])
+                self.cols = int(dims[1])
 
-            corner = get_next_param(f).split(" ")
-            self.min_row = int(corner[0])
-            self.min_col = int(corner[1])
+                corner = get_next_param(f).split(" ")
+                self.min_row = int(corner[0])
+                self.min_col = int(corner[1])
 
-            self.grid = list(reversed([ [ c for c in f.readline()[:-1] ] for row in range(self.rows) ]))
+                self.grid = list(reversed([ [ c for c in f.readline()[:-1] ] for row in range(self.rows) ]))
+        except:
+            self.rows = 0
+            self.cols = 0
+            self.grid = []
 
     def is_clear(self, row, col):
         if row < 0 or row >= self.rows:
@@ -165,7 +170,9 @@ class NavigationHelper:
                 if not self.is_clear(adjusted_coord[0], adjusted_coord[1]):
                     # If blocked at distance 1, try distance 2
                     adjusted_coord = [ c[0] + 2*deltas[side_dir][0], c[1] + 2*deltas[side_dir][1] ]
-                print(adjusted_coord)
+                if not self.is_clear(adjusted_coord[0], adjusted_coord[1]):
+                    # If blocked at distance 2, try distance 3
+                    adjusted_coord = [ c[0] + 3*deltas[side_dir][0], c[1] + 3*deltas[side_dir][1] ]
                 if self.is_clear(adjusted_coord[0], adjusted_coord[1]):
                     goal_coords.add( (adjusted_coord[0], adjusted_coord[1], (side_dir + 2) % 4) )
         return goal_coords

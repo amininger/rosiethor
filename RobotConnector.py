@@ -52,8 +52,6 @@ class RobotConnector(AgentConnector):
 
         self.dims = [.5, .5, 1.0]
 
-        self.handle_world_change(self.sim.world)
-
         self.wm_dirty = False
         self.added = False
 
@@ -178,6 +176,8 @@ class RobotConnector(AgentConnector):
                 command = self.process_close_command(root_id)
             elif action_name == "set-timer":
                 command = self.process_set_timer_command(root_id)
+            elif action_name == "use":
+                command = self.perform_use_command(root_id)
             elif action_name == "approach":
                 self.perform_approach_command(root_id)
                 return
@@ -243,7 +243,7 @@ class RobotConnector(AgentConnector):
             raise CommandSyntaxError("put-down is missing ^receptacle")
 
         rec_id = self.agent.connectors["perception"].objects.get_perception_id(rec_handle)
-        if world_rec == None:
+        if rec_id == None:
             raise CommandSyntaxError("put-down given unrecognized receptacle " + rec_handle)
 
         return { "action": "PutObject", 
@@ -287,6 +287,25 @@ class RobotConnector(AgentConnector):
 
         return { "action": "SetTime", "objectId": perc_id, "timeset": float(time) }
 
+    def process_use_command(self, root_id):
+        obj_handle = root_id.GetChildString("object")
+        if obj_handle == None:
+            raise CommandSyntaxError("use is missing ^object")
+
+        perc_id = self.agent.connectors["perception"].objects.get_perception_id(obj_handle)
+        if perc_id == None:
+            raise CommandSyntaxError("use given unrecognized object " + obj_handle)
+
+        tar_handle = root_id.GetChildString("target")
+        if tar_handle == None:
+            raise CommandSyntaxError("use is missing ^target")
+
+        tar_id = self.agent.connectors["perception"].objects.get_perception_id(tar_handle)
+        if tar_id == None:
+            raise CommandSyntaxError("use given unrecognized target " + tar_handle)
+
+        return { "action": "UseObject", "toolId": perc_id, "objectId": tar_id }
+
     def perform_approach_command(self, root_id):
         obj_handle = root_id.GetChildString("object")
         if obj_handle == None:
@@ -300,7 +319,7 @@ class RobotConnector(AgentConnector):
             root_id.CreateStringWME("status", "success")
         else:
             root_id.CreateStringWME("status", "error")
-            root_id.CreateStringWME("error-info", "Execution error while doing approach(" + obj_handle + ")")
+            root_id.CreateStringWME("error-info", "Execution error while doing approach(" + obj_handle + ") " + perc_id)
 
 
     # Creates a triangular view region of height VIEW_DIST

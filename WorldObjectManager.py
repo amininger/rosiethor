@@ -1,7 +1,7 @@
 from .WorldObject import WorldObject
 
 class WorldObjectManager(object):
-    def __init__(self, world):
+    def __init__(self):
         self.objects = {}
         self.objs_to_remove = set()
 
@@ -10,7 +10,6 @@ class WorldObjectManager(object):
         self.objects_id = None
         self.next_obj_id = 1
         self.wm_dirty = False
-        self.update(world)
 
     def get_object(self, handle):
         return self.objects.get(handle, None)

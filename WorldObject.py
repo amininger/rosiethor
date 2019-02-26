@@ -3,6 +3,7 @@ import re
 
 from .ObjectProperty import ObjectProperty
 
+
 class ObjectDataUnwrapper:
     def __init__(self, data):
         self.data = data
@@ -12,6 +13,26 @@ class ObjectDataUnwrapper:
 
     def name(self):
         return re.match(r"[a-zA-Z]*", self.id()).group(0).lower()
+
+    def properties(self):
+        name = self.name()
+
+        if name == "fridge": return { "name": "fridge1" } 
+        if name == "sink": return { "name": "sink1" } 
+        if name == "countertop": return { "name": "counter1" } 
+        if name == "cabinet": return { "name": "cupboard1" } 
+        if name == "drawer": return { "name": "drawer1" } 
+        if name == "tabletop": return { "name": "table1" } 
+        if name == "trash": return { "name": "garbage1" } 
+        if name == "microwave": return { "name": "microwave1" } 
+        if name == "butterknife": return { "shape": "knife1", "subcategory": "utensil1" } 
+        if name == "fork": return { "shape": "fork1", "subcategory": "utensil1" } 
+        if name == "mug": return { "shape": "mug1", "color": "blue1" } 
+        if name == "sodacan": return { "shape": "soda1", "color": "red1", "subcategory": "liquid1" } 
+        if name == "waterbottle": return { "shape": "water1", "color": "blue1", "subcategory": "liquid1" } 
+        if name == "milkcarton": return { "shape": "milk1", "color": "white1", "subcategory": "liquid1" } 
+
+        return { "name": name }
 
     #def yaw(self):
     #    # Remapped so yaw=0 is down x-axis and yaw=90 is down y-axis
@@ -32,7 +53,12 @@ class ObjectDataUnwrapper:
         return [x, y, z]
 
     def is_receptacle(self):
-        return bool(self.data["receptacle"])
+        name = self.name()
+        return bool(self.data["receptacle"]) and name not in [ "tabletop", "countertop" ]
+
+    def is_surface(self):
+        name = self.name()
+        return bool(self.data["receptacle"]) and name in [ "tabletop", "countertop" ]
 
     def is_grabbable(self):
         return bool(self.data["pickupable"])
@@ -133,7 +159,6 @@ class WorldObject(object):
 
         self.objectId = unwrapper.id()
         self.update_bbox(unwrapper)
-        self.set_contained_objects(unwrapper.contained_objects())
 
         if len(self.properties) == 0:
             self.create_properties(unwrapper)
@@ -145,7 +170,7 @@ class WorldObject(object):
         if "door2" in self.properties:
             self.properties["door2"].set_value(unwrapper.open_state())
 
-        if "activation" in self.properties:
+        if "activation1" in self.properties:
             self.properties["activation1"].set_value(unwrapper.activated_state())
 
 
@@ -171,7 +196,9 @@ class WorldObject(object):
     def create_properties(self, unwrapper):
         self.properties["category"] = ObjectProperty("category", "object")
 
-        self.properties["name"] = ObjectProperty("name", unwrapper.name())
+        props = unwrapper.properties()
+        for prop_name, prop_val in props.items():
+            self.properties[prop_name] = ObjectProperty(prop_name, prop_val)
 
         self.properties["inreach"] = ObjectProperty("inreach", "inreach")
 
@@ -181,6 +208,9 @@ class WorldObject(object):
 
         if unwrapper.is_receptacle():
             self.properties["receptacle"] = ObjectProperty("receptacle", "receptacle")
+
+        if unwrapper.is_surface():
+            self.properties["receptacle"] = ObjectProperty("receptacle", "surface")
 
         if unwrapper.is_grabbable():
             self.properties["grabbable"] = ObjectProperty("grabbable", "grabbable")

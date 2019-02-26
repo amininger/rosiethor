@@ -9,9 +9,6 @@ from ControllerGUI import ControllerGUI
 sim = Ai2ThorSimulator()
 sim.start("ONR_demo")
 
-sim.save()
-print("Wrote world file")
-
 root = Tk()
 controller_gui = ControllerGUI(sim, master=root)
 root.mainloop()

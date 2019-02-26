@@ -59,8 +59,9 @@ class NavigationHelper:
         return (self.grid[row][col] == ' ')
 
     def get_path_actions(self, path):
-        if not path:
+        if path == None:
             return None
+        
         actions = []
         for i in range(len(path)-1):
             step = path[i]
@@ -97,13 +98,15 @@ class NavigationHelper:
         start_node = Node(start_coord[0], start_coord[1], start_dir)
 
         goal_coords = self.calc_goal_coords_for_obj(goal_obj)
-        print(goal_coords)
         path = self.astar_path_search(start_node, goal_coords)
         return self.get_path_actions(path)
 
     def astar_path_search(self, start_node, goal_coords):
         if len(goal_coords) == 0:
             return None
+
+        if start_node.get_coord() in goal_coords:
+            return []
 
         self.opened = []
         self.closed = set()

@@ -17,31 +17,35 @@ class Ai2ThorSimulator:
     def __init__(self):
         self.sim = None
         self.world = None
-        self.lock = Lock()
         self.listeners = set()
+        self.lock = Lock()
 
     def start(self, scene_name="testing"):
         self.scene_name = scene_name
 
         self.sim = ai2thor.controller.Controller()
         self.sim.local_executable_path = "/home/aaron/sf/research/rosie-project/ai2thor/unity/ai2thor.x86_64"
-        self.sim.start()
-        self.sim.reset(self.scene_name)
+        self.sim.start(player_screen_width=300, player_screen_height=300)
 
         self.nav = NavigationHelper(self.scene_name)
 
-        self.poll_thread = Thread(target = Ai2ThorSimulator.__poll_thread, args = (self, ) )
-        self.poll_thread.start()
+        self.shutdown = False
+        #self.poll_thread = Thread(target = Ai2ThorSimulator.__poll_thread, args = (self, ) )
+        #self.poll_thread.start()
 
-        #self.world = self.sim.step(dict(action='Initialize', gridSize=0.25, screenWidth=800, screenHeight=600)).metadata
-        #self.world = self.sim.step(dict(action='Teleport', x=-1.25, y=0.98, z=-2.0)).metadata
-        #self.world = self.sim.step(dict(action='RotateRight')).metadata
-        #self.world = self.sim.step(dict(action='RotateRight')).metadata
-        #self.world = self.sim.step(dict(action='LookDown')).metadata
+        self.set_scene(scene_name)
+        self.exec_command(dict(action='Teleport', x=-1.25, y=0.98, z=-2.0))
+        self.exec_simple_command('RotateRight')
+        self.exec_simple_command('LookDown')
+
+    def stop(self):
+        pass
+        #self.shutdown = True
+        #time.sleep(1.0)
 
     # Will get an updated world state every 500 ms
     def __poll_thread(self):
-        while True:
+        while not self.shutdown:
             self.exec_simple_command("Poll")
             time.sleep(0.5)
 
@@ -73,6 +77,7 @@ class Ai2ThorSimulator:
             self.world = self.sim.step(cmd).metadata
             for listener in self.listeners:
                 listener(self.world)
+            self.save()
             self.lock.release()
 
     def get_norm_dir_to_obj(self, obj):
@@ -145,7 +150,7 @@ class Ai2ThorSimulator:
         robot_xyzrpy = MapUtil.get_obj_xyzrpy(self.world["agent"])
         path = self.nav.find_path_to_obj(robot_xyzrpy, obj)
 
-        if not path:
+        if path == None:
             return False
 
         for step in path:

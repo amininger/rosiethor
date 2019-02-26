@@ -36,13 +36,9 @@ class ControllerGUI(Toplevel):
         look_down["command"] = lambda : self.sim_robot.exec_simple_command("LookDown")
         self.buttons.append(look_down)
 
-        #open_door = Button(self, text="Open")
-        #open_door["command"] = lambda : self.open_command()
-        #self.buttons.append(open_door)
-
-        approach = Button(self, text="Approach")
-        approach["command"] = lambda : self.approach_command()
-        self.buttons.append(approach)
+        open_door = Button(self, text="Open")
+        open_door["command"] = lambda : self.open_command()
+        self.buttons.append(open_door)
 
         close_door = Button(self, text="Close")
         close_door["command"] = lambda : self.close_command()
@@ -56,13 +52,29 @@ class ControllerGUI(Toplevel):
         put["command"] = lambda : self.put_command()
         self.buttons.append(put)
 
+        approach = Button(self, text="Approach")
+        approach["command"] = lambda : self.approach_command()
+        self.buttons.append(approach)
+
+        lookat = Button(self, text="Lookat")
+        lookat["command"] = lambda : self.lookat_command()
+        self.buttons.append(lookat)
+
+        settime = Button(self, text="SetTime")
+        settime["command"] = lambda : self.settime_command()
+        self.buttons.append(settime)
+
+        use = Button(self, text="Use")
+        use["command"] = lambda : self.use_command()
+        self.buttons.append(use)
+
         for i in range(len(self.buttons)):
             self.buttons[i].grid(row=int(i/4), column=i%4, sticky=N+S+E+W)
 
     def create_menu(self):
         self.menu_label_var = StringVar()
         self.menu_label = Label(self, textvariable=self.menu_label_var)
-        self.menu_label.grid(row=3, columnspan=4, sticky=W+E)
+        self.menu_label.grid(row=4, columnspan=4, sticky=W+E)
 
         self.menu_buttons = []
 
@@ -73,7 +85,7 @@ class ControllerGUI(Toplevel):
         for opt in options:
             self.menu_buttons.append(Button(self, text=opt, command=lambda opt=opt: self.on_menu_select(opt, name)))
         for r, btn in enumerate(self.menu_buttons):
-            btn.grid(row=4+r, columnspan=4, sticky=W+E)
+            btn.grid(row=5+r, columnspan=4, sticky=W+E)
 
     def hide_menu(self):
         for btn in self.menu_buttons:
@@ -96,12 +108,30 @@ class ControllerGUI(Toplevel):
             self.sim_robot.exec_command(dict(action="PutObject", objectId=held_id, receptacleObjectId=obj_id))
         elif cmd_name == "APPROACH":
             self.sim_robot.approach_obj(obj_id)
-
+        elif cmd_name == "LOOKAT":
+            self.sim_robot.lookat_obj(obj_id)
+        elif cmd_name == "SETTIME":
+            self.sim_robot.exec_command(dict(action="SetTime", objectId=obj_id, timeset=30))
+        elif cmd_name == "USE":
+            #held_id = str(self.sim_robot.world["inventoryObjects"][0]["objectId"])
+            self.sim_robot.exec_command(dict(action="UseObject", objectId=obj_id, objectType="Mug"))#, toolId=held_id))
 
     def approach_command(self):
         obj_ids = [ str(obj["objectId"]) for obj in self.sim_robot.world["objects"] ]
         self.show_menu("APPROACH", obj_ids)
 
+    def lookat_command(self):
+        obj_ids = [ str(obj["objectId"]) for obj in self.sim_robot.world["objects"] ]
+        self.show_menu("LOOKAT", obj_ids)
+
+    def settime_command(self):
+        obj_ids = [ str(obj["objectId"]) for obj in self.sim_robot.world["objects"] 
+                if (obj["visible"] and obj["objectType"] == "Microwave") ]
+        self.show_menu("SETTIME", obj_ids)
+
+    def use_command(self):
+        obj_ids = [ str(obj["objectId"]) for obj in self.sim_robot.world["objects"] if obj["visible"] ]
+        self.show_menu("USE", obj_ids)
 
     def open_command(self):
         obj_ids = [ str(obj["objectId"]) for obj in self.sim_robot.world["objects"] 
@@ -139,9 +169,9 @@ class ControllerGUI(Toplevel):
 
     def __init__(self, sim_robot, master=None):
         Toplevel.__init__(self, master)
-        for r in range(3):
+        for r in range(4):
             self.rowconfigure(r, weight=2, minsize=50)
-        self.rowconfigure(3, weight=1, minsize=30)
+        self.rowconfigure(4, weight=1, minsize=30)
         for c in range(4):
             self.columnconfigure(c, weight=1, minsize=50)
         self.sim_robot = sim_robot

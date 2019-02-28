@@ -9,11 +9,12 @@ class RosieGUI(Frame):
     def create_widgets(self):
         self.grid(row=0, column=0, sticky=N+S+E+W)
         self.columnconfigure(0, weight=3, minsize=600)
-        self.columnconfigure(1, weight=1, minsize=200)
+        self.columnconfigure(1, weight=1, minsize=400)
+        self.columnconfigure(2, weight=1, minsize=100)
         self.rowconfigure(0, weight=10, minsize=400)
         self.rowconfigure(1, weight=1, minsize=50)
 
-        self.messages_list = Listbox(self, font=("Times", "16"))
+        self.messages_list = Listbox(self, font=("Times", "12"))
         self.scrollbar = Scrollbar(self.messages_list)
         self.messages_list.config(yscrollcommand=self.scrollbar.set)
         self.scrollbar.config(command=self.messages_list.yview)
@@ -23,7 +24,7 @@ class RosieGUI(Frame):
         self.script_frame = Frame(self)
         self.script_frame.grid(row=0, column=1, sticky=N+S+E+W)
 
-        self.chat_entry = Entry(self, font=("Times", "20"))
+        self.chat_entry = Entry(self, font=("Times", "16"))
         self.chat_entry.bind('<Return>', lambda key: self.on_submit_click())
         self.chat_entry.bind('<Up>', lambda key: self.scroll_history(-1))
         self.chat_entry.bind('<Down>', lambda key: self.scroll_history(1))
@@ -33,21 +34,21 @@ class RosieGUI(Frame):
         self.submit_button["command"] = self.on_submit_click
         self.submit_button.grid(row=1, column=1, sticky=N+S+E+W)
 
-    def init_simulator(self):
-        self.sim = Ai2ThorSimulator()
-        self.sim.start()
+        self.run_button = Button(self, text="Run", font=("Times", "24"))
+        self.run_button["command"] = self.on_run_click
+        self.run_button.grid(row=1, column=2, sticky=N+S+E+W)
 
     def init_soar_agent(self, config_file):
         self.agent = RosieThorAgent(self.sim, config_filename=config_file)
         self.agent.connectors["language"].register_message_callback(self.receive_message)
         self.agent.connect()
-        self.sim.set_scene(self.agent.scene)
+        self.sim.start(self.agent.scene)
 
     def create_script_buttons(self):
         self.script = []
         if self.agent.messages_file != None:
             with open(self.agent.messages_file, 'r') as f:
-                self.script = [ line.rstrip('\n') for line in f.readlines()]
+                self.script = [ line.rstrip('\n') for line in f.readlines() if len(line.rstrip('\n')) > 0 and line[0] != '#']
 
         row = 0
         for message in self.script:
@@ -69,6 +70,9 @@ class RosieGUI(Frame):
 
     def on_submit_click(self):
         self.send_message(self.chat_entry.get())
+        
+    def on_run_click(self):
+        self.agent.start()
 
     def scroll_history(self, delta):
         if self.history_index == 0 and delta == -1:
@@ -94,7 +98,7 @@ class RosieGUI(Frame):
         self.history_index = 0
 
         self.create_widgets()
-        self.init_simulator()
+        self.sim = Ai2ThorSimulator()
         self.init_soar_agent(rosie_config)
         self.create_script_buttons()
 

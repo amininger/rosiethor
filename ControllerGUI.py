@@ -113,8 +113,8 @@ class ControllerGUI(Toplevel):
         elif cmd_name == "SETTIME":
             self.sim_robot.exec_command(dict(action="SetTime", objectId=obj_id, timeset=30))
         elif cmd_name == "USE":
-            #held_id = str(self.sim_robot.world["inventoryObjects"][0]["objectId"])
-            self.sim_robot.exec_command(dict(action="UseObject", objectId=obj_id, objectType="Mug"))#, toolId=held_id))
+            held_id = str(self.sim_robot.world["inventoryObjects"][0]["objectId"])
+            self.sim_robot.exec_command(dict(action="UseObject", objectId=obj_id, toolId=held_id))
 
     def approach_command(self):
         obj_ids = [ str(obj["objectId"]) for obj in self.sim_robot.world["objects"] ]

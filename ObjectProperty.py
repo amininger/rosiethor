@@ -45,6 +45,7 @@ class ObjectProperty(object):
 
         self.value_wme.DestroyWME()
         self.value_wme = self.values_id.CreateFloatWME(self.value, 1.0)
+        self.needs_update = False
 
     def remove_from_wm(self):
         if not self.added:

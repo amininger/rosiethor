@@ -8,6 +8,9 @@ VIEW_ANGLE = 1.5708 * 0.8
 VIEW_HEIGHT = 2.0
 
 from threading import Lock
+import time
+
+INTERMEDIATE_ACTION_DELAY = 0.15
 
 class RobotDataUnwrapper:
     def __init__(self, world_data):
@@ -177,7 +180,7 @@ class RobotConnector(AgentConnector):
             elif action_name == "set-timer":
                 command = self.process_set_timer_command(root_id)
             elif action_name == "use":
-                command = self.perform_use_command(root_id)
+                command = self.process_use_command(root_id)
             elif action_name == "approach":
                 self.perform_approach_command(root_id)
                 return
@@ -185,6 +188,8 @@ class RobotConnector(AgentConnector):
                 raise CommandSyntaxError("Unrecognized Action " + action_name)
 
             self.sim.exec_command(command)
+            time.sleep(INTERMEDIATE_ACTION_DELAY)
+            
             root_id.CreateStringWME("status", "success")
         except CommandSyntaxError as e: 
             root_id.CreateStringWME("status", "error")

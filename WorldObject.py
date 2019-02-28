@@ -27,10 +27,15 @@ class ObjectDataUnwrapper:
         if name == "microwave": return { "name": "microwave1" } 
         if name == "butterknife": return { "shape": "knife1", "subcategory": "utensil1" } 
         if name == "fork": return { "shape": "fork1", "subcategory": "utensil1" } 
-        if name == "mug": return { "shape": "mug1", "color": "blue1" } 
+        if name == "mug": return { "shape": "mug1", "color": "white1" } 
+        if name == "mugfilled": return { "shape": "mug1", "color": "white1" } 
         if name == "sodacan": return { "shape": "soda1", "color": "red1", "subcategory": "liquid1" } 
         if name == "waterbottle": return { "shape": "water1", "color": "blue1", "subcategory": "liquid1" } 
         if name == "milkcarton": return { "shape": "milk1", "color": "white1", "subcategory": "liquid1" } 
+        if name == "bowl": return { "shape": "mug1", "color": "blue1" } 
+        if name == "bowlfilled": return { "shape": "mug1", "color": "blue1" } 
+        if name == "container": return { "shape": "pitcher1", "subcategory": "liquid1" } 
+        if name == "containerfull": return { "shape": "pitcher1", "subcategory": "liquid1" } 
 
         return { "name": name }
 
@@ -67,7 +72,7 @@ class ObjectDataUnwrapper:
         return "inreach" if self.data["visible"] else "not-inreach"
 
     def temperature(self):
-        if float(self.data["temperature"]) > 100:
+        if float(self.data["temperature"]) > 125:
             return "hot1"
         elif float(self.data["temperature"]) > 70:
             return "warm1"
@@ -93,7 +98,14 @@ class ObjectDataUnwrapper:
     def contained_objects(self):
         return [ str(obj_h) for obj_h in self.data["receptacleObjectIds"] ]
 
-
+    def container_state(self):
+        obj_type = self.data["objectType"]
+        if obj_type in [ "Mug", "Bowl", "Container" ]:
+            return "empty1"
+        if obj_type in [ "MugFilled", "BowlFilled", "ContainerFull" ]:
+            return "full1"
+        return None
+        
 class WorldObject(object):
     def __init__(self, handle, obj_data=None):
         self.handle = handle
@@ -173,6 +185,9 @@ class WorldObject(object):
         if "activation1" in self.properties:
             self.properties["activation1"].set_value(unwrapper.activated_state())
 
+        if "container1" in self.properties:
+            self.properties["container1"].set_value(unwrapper.container_state())
+
 
     def set_contained_objects(self, obj_handles):
         for obj_h in obj_handles:
@@ -220,6 +235,9 @@ class WorldObject(object):
 
         if unwrapper.activated_state() != None:
             self.properties["activation1"] = ObjectProperty("activation1", "off2")
+
+        if unwrapper.container_state() != None:
+            self.properties["container1"] = ObjectProperty("container1", "empty1")
 
     ### Methods for managing working memory structures ###
 

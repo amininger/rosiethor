@@ -11,7 +11,7 @@ from math import *
 
 import time
 
-INTERMEDIATE_ACTION_DELAY = 0.2
+INTERMEDIATE_ACTION_DELAY = 0.15
 
 class Ai2ThorSimulator:
     def __init__(self):
@@ -25,7 +25,7 @@ class Ai2ThorSimulator:
 
         self.sim = ai2thor.controller.Controller()
         self.sim.local_executable_path = "/home/aaron/sf/research/rosie-project/ai2thor/unity/ai2thor.x86_64"
-        self.sim.start(player_screen_width=300, player_screen_height=300)
+        self.sim.start(player_screen_width=400, player_screen_height=300)
 
         self.nav = NavigationHelper(self.scene_name)
 
@@ -34,9 +34,6 @@ class Ai2ThorSimulator:
         #self.poll_thread.start()
 
         self.set_scene(scene_name)
-        self.exec_command(dict(action='Teleport', x=-1.25, y=0.98, z=-2.0))
-        self.exec_simple_command('RotateRight')
-        self.exec_simple_command('LookDown')
 
     def stop(self):
         pass
@@ -50,10 +47,11 @@ class Ai2ThorSimulator:
             time.sleep(0.5)
 
     def set_scene(self, scene_name):
-        self.lock.acquire()
         self.sim.reset(scene_name)
-        self.world = self.sim.step(dict(action='Initialize', gridSize=0.25, screenWidth=800, screenHeight=600)).metadata
-        self.lock.release()
+        self.exec_command(dict(action='Initialize', gridSize=0.25, screenWidth=800, screenHeight=600))
+        self.exec_command(dict(action='Teleport', x=-1.25, y=0.98, z=-2.0))
+        self.exec_simple_command('RotateRight')
+        self.exec_simple_command('LookDown')
 
     def save(self):
         world_info = json.dumps(self.world)

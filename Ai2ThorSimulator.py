@@ -75,7 +75,6 @@ class Ai2ThorSimulator:
             self.world = self.sim.step(cmd).metadata
             for listener in self.listeners:
                 listener(self.world)
-            self.save()
             self.lock.release()
 
     def get_norm_dir_to_obj(self, obj):

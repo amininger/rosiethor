@@ -68,8 +68,8 @@ class ObjectDataUnwrapper:
     def is_grabbable(self):
         return bool(self.data["pickupable"])
 
-    def inreach_state(self):
-        return "inreach" if self.data["visible"] else "not-inreach"
+    def reachable_state(self):
+        return "reachable1" if self.data["visible"] else "not-reachable1"
 
     def temperature(self):
         if float(self.data["temperature"]) > 125:
@@ -175,7 +175,7 @@ class WorldObject(object):
         if len(self.properties) == 0:
             self.create_properties(unwrapper)
 
-        self.properties["inreach"].set_value(unwrapper.inreach_state())
+        self.properties["reachable"].set_value(unwrapper.reachable_state())
         self.properties["temperature"].set_value(unwrapper.temperature())
         self.properties["timeleft"].set_value(unwrapper.timeleft())
 
@@ -215,7 +215,7 @@ class WorldObject(object):
         for prop_name, prop_val in props.items():
             self.properties[prop_name] = ObjectProperty(prop_name, prop_val)
 
-        self.properties["inreach"] = ObjectProperty("inreach", "inreach")
+        self.properties["reachable"] = ObjectProperty("is-reachable1", "reachable1")
 
         self.properties["temperature"] = ObjectProperty("temperature", unwrapper.temperature())
 
@@ -228,7 +228,7 @@ class WorldObject(object):
             self.properties["receptacle"] = ObjectProperty("receptacle", "surface")
 
         if unwrapper.is_grabbable():
-            self.properties["grabbable"] = ObjectProperty("grabbable", "grabbable")
+            self.properties["grabbable"] = ObjectProperty("is-grabbable1", "grabbable1")
 
         if unwrapper.open_state() != None:
             self.properties["door2"] = ObjectProperty("door2", "closed2")
